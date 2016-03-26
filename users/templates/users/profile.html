@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block section %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <table>
+        {{ form_profile.as_table }}
+    </table>
+    <div>
+        <button>entrar</button>
+    </div>
+</form>
+{% for error in errors %}
+
+{% endfor %}
+{% endblock %}

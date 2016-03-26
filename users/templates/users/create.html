@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+    {% block section%}
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form_user.as_table }}
+    </table>
+    <div>
+        <button>Entrar</button>
+    </div>
+</form>
+{% endblock %}

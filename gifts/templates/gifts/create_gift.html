@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+    {% block section%}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ gifts_form.as_table }}
+    </table>
+    <div>
+        <button>Entrar</button>
+    </div>
+</form>
+{% endblock %}

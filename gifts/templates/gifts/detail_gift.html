@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block section %}
+<img src="{{gift.photo.url}}" alt="{{gift.photo.name}}" height="300">
+<br>
+<p>{{gift.owners.username}}</p>
+<form method="post">
+    {% csrf_token %}
+    {{form_coment.as_table}}
+    <input type="submit">
+</form>
+{% for comment in comments %}
+    <p>{{comment.comment}}</p>
+    <p>{{comment.user}}</p>
+{% endfor %}
+{% endblock %}
