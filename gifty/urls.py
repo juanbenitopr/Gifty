@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.views.static import serve
 
 from gifts.views import HomeGifts, CreateGift, DetailGift
-from users.views import LoginView, CreateUser, LogoutView, ProfileView, SelfData
+from users.views import LoginView, CreateUser, LogoutView, ProfileView, SelfData, OtherData
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^create_user$',CreateUser.as_view(),name='users_create'),
     url(r'^create_gift$',CreateGift.as_view(),name='gift_create'),
     url(r'^detail/(?P<pk>[0-9]+)$',DetailGift.as_view(),name='detail_gift'),
+    url(r'^other_data/(?P<pk>[0-9]+)$',OtherData.as_view(),name='other_data'),
     url(r'^profile$',ProfileView.as_view(),name='profile'),
     url(r'^SelfData',SelfData.as_view(),name='self_data'),
     url(r'^Files/(?P<path>.*)$',serve,{'document_root': settings.MEDIA_ROOT})

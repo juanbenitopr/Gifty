@@ -1,17 +1,13 @@
 {% extends 'base.html' %}
 
     {% block section %}
-    {% for list in gifts_list %}
+    <p>{{other_user.username}}</p>
+    {% for list in lists %}
             <h3>{{list.name}}</h3>
             {% for gift in list.gifts.all %}
             <div style="display:inline-block">
                 <a href="{% url 'detail_gift' gift.pk %}"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a>
             </div>
             {% endfor %}
-        {% endfor %}
-        {% for profile in profiles %}
-            <p>{{profile.name}}</p>
-            <p>{{profile.age}}</p>
-            <p>{{profile.gender}}</p>
         {% endfor %}
     {% endblock %}

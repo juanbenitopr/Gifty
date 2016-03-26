@@ -3,7 +3,7 @@
 {% block section %}
 <img src="{{gift.photo.url}}" alt="{{gift.photo.name}}" height="300">
 <br>
-<p>{{gift.owners.username}}</p>
+<a href="{% url 'other_data' gift.owners.pk %}">{{gift.owners.username}}</a>
 <form method="post">
     {% csrf_token %}
     {{form_coment.as_table}}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -132,8 +133,24 @@ class SelfData(View):
     def get(self,request):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
+
         context = {
             'gifts_list':query_list,
             'profiles':query_profile
         }
         return render(request,'users/SelfData.html',context)
+
+class OtherData(View):
+
+    @method_decorator(login_required)
+    def get(self,request,pk):
+        other_user = User.objects.get(pk=pk)
+        if other_user is None:
+            return HttpResponse ('Usuario no encontrado')
+        else:
+            query_list = List.objects.filter(user=other_user)
+            context = {
+                'lists':query_list,
+                'other_user':other_user
+            }
+            return render(request,'users/profile_other.html',context)
