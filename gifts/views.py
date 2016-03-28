@@ -19,8 +19,10 @@ class HomeGifts(View):
             return redirect('login')
 
         gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(owners=request.user)).order_by('-created_at')
+        form_create = GiftForm()
         context = {
-            'gifts_list':gifts
+            'gifts_list':gifts,
+            'form_create':form_create
         }
         return render(request,'gifts/home.html',context)
 
