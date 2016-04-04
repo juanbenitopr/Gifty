@@ -10,9 +10,9 @@ from django.views.generic.base import View
 from django.contrib.auth import logout, login, authenticate
 
 from gifts.forms import ListGiftForm
-from gifts.models import List, GiftsMember, PUBLIC
+from gifts.models import List, GiftsMember, PUBLIC, LikeGiftProfile
 from users.forms import LoginForm, NewUserForm, ProfileForm
-from users.models import Profile
+from users.models import Profile, LikesUser
 
 
 class CreateUser(View):
@@ -108,6 +108,11 @@ class ProfileView(View):
         form = ProfileForm(request.POST,instance=profile_new)
         if form.is_valid():
             form.save()
+            like_list = form.data.get('myTags')
+            like_split = like_list.split(",")
+            for like in like_split:
+                likes_user = LikesUser.objects.create(user = request.user,profile=profile_new,like = like)
+                likes_user.save()
             name_list = form.cleaned_data.get('name')+'_List'
             list = List.objects.create(user=request.user,name=name_list,profile = profile_new,visibility=PUBLIC)
             list.save()
@@ -133,10 +138,12 @@ class SelfData(View):
     def get(self,request):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
+        query_likes = LikesUser.objects.filter(user = request.user)
         li = query_list[1]
         context = {
             'gifts_list':query_list,
-            'profiles':query_profile
+            'profiles':query_profile,
+            'likes_user':query_likes
         }
         return render(request,'users/SelfData.html',context)
 

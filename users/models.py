@@ -23,6 +23,7 @@ class Profile(models.Model):
          return self.name
 
 class LikesUser(models.Model):
+     user = models.ForeignKey(User,null=True)
      profile = models.ForeignKey(Profile)
      like = models.CharField(max_length=150)
 

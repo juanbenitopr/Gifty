@@ -27,6 +27,11 @@
     <p> Name:{{profile.name}}</p>
     <p>Age:{{profile.age}}</p>
     <p>Gender: {{profile.gender}}</p>
+    {% for like in likes_user.all %}
+        {% if like.profile == profile %}
+        {{like.like}}
+    {% endif %}
+    {% endfor %}
     <button role="button" class="btn btn-primary"> Editar </button>
 </div>
 {% endfor %}
