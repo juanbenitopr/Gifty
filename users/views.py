@@ -133,7 +133,7 @@ class SelfData(View):
     def get(self,request):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
-
+        li = query_list[1]
         context = {
             'gifts_list':query_list,
             'profiles':query_profile
@@ -149,8 +149,16 @@ class OtherData(View):
             return HttpResponse ('Usuario no encontrado')
         else:
             query_list = List.objects.filter(user=other_user)
+            query_profile = Profile.objects.filter(owner = other_user)
             context = {
                 'lists':query_list,
-                'other_user':other_user
+                'other_user':other_user,
+                'profiles':query_profile
             }
             return render(request,'users/profile_other.html',context)
+
+@login_required(login_url='users/login.html')
+def addGiftLikeProfile(request):
+    if request.method == 'POST':
+        pass
+    pass

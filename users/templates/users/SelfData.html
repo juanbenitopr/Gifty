@@ -5,6 +5,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3>{{list.name}}</h3>
+        <h4>Profile asociado:  {{list.profile.name}}</h4>
     </div>
     <div class="panel-body">
         {% if not list.gifts.all %}
@@ -16,11 +17,17 @@
     </div>
 </div>
 {% endfor %}
+<style>
+    .well{
+        padding:10px
+    }
+</style>
 {% for profile in profiles %}
 <div class="well">
-    <p>{{profile.name}}</p>
-    <p>{{profile.age}}</p>
-    <p>{{profile.gender}}</p>
+    <p> Name:{{profile.name}}</p>
+    <p>Age:{{profile.age}}</p>
+    <p>Gender: {{profile.gender}}</p>
+    <button role="button" class="btn btn-primary"> Editar </button>
 </div>
 {% endfor %}
 <style>

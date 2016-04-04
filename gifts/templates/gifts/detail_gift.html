@@ -1,29 +1,59 @@
 {% extends 'base.html' %}
 
 {% block section %}
-<img src="{{gift.photo.url}}" alt="{{gift.photo.name}}" height="300">
-<br>
-<a href="{% url 'other_data' gift.owners.pk %}" style="display:block">{{gift.owners.username}}</a>
+<div class="detail-photo">
+    <img src="{{gift.photo.url}}" alt="{{gift.photo.name}}" width="300">
+    <br>
+    <div class="user-photo">
+       <p>User: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">{{gift.owners.username}}</a></p>
+            <p>Profile: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline"> {{gift.profile.name}}</a></p>
+    </div>
+</div>
 <p style="display:inline">Hola! </p><p  style="display:inline">{{user.username}} </p>
 <p>Deja un comentario y no te olvides de puntuar!</p>
 
-<form>
+<form style="margin-bottom:10px">
     {% csrf_token %}
     {{form_coment.as_table}}
     <button formmethod="post" class="btn btn-primary">Comenta!</button>
 </form>
 {% for comment in comments %}
+<div class="comment">
+    <a href="{% url 'other_data' comment.user.pk %}">{{comment.user}}</a>
     <p>{{comment.comment}}</p>
-    <p>{{comment.user}}</p>
+</div>
 {% endfor %}
 <style>
     input{
-        border:1px solid #39DFE4;
-        border-radius:15px;
+    border:1px solid #39DFE4;
+    border-radius:15px;
 
     }
     input:focus{
-        border-color:#3986E4
+    border-color:#3986E4
     }
+    .comment{
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+    background-color:#C1BCBC;
+    border-bottom:solid black 1px
+    }
+    .comment a{
+    display:inline;
+    }
+    .comment p{
+    display:inline;
+    }
+    .user-photo{
+    display:block;
+    background-color:#62C8D8;
+    border-radius:3px;
+    padding:3px
+    }
+    .detail-photo{
+        max-width:300px
+    }
+
 </style>
 {% endblock %}

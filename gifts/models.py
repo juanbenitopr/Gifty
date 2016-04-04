@@ -41,6 +41,7 @@ class List(models.Model):
     visibility = models.CharField(max_length=4,choices=LICENSES,default=PUBLIC)
     def __unicode__(self):
         return self.name
+
 class GiftsMember (models.Model):
     gift = models.ForeignKey(Gift)
     list = models.ForeignKey(List)
@@ -55,3 +56,7 @@ class ScoreGift(models.Model):
     score = models.IntegerField()
     gift = models.ForeignKey(Gift)
     user = models.ForeignKey(User)
+class LikeGiftProfile(models.Model):
+    profile = models.ForeignKey(Profile)
+    list = models.ForeignKey(List)
+    gift = models.ForeignKey(Gift)
