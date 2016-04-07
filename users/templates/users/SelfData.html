@@ -8,11 +8,10 @@
         <h4>Profile asociado:  {{list.profile.name}}</h4>
     </div>
     <div class="panel-body">
-        {% if not list.gifts.all %}
-            No hay regalos!
-        {% endif %}
         {% for gift in list.gifts.all %}
         <a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a>
+        {% empty %}
+            No hay regalos!
         {% endfor %}
     </div>
 </div>

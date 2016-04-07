@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block section %}
-<div class="detail-photo">
+<div class="well detail-photo">
     <img src="{{gift.photo.url}}" alt="{{gift.photo.name}}" width="300">
     <br>
     <div class="user-photo">
@@ -23,37 +23,4 @@
     <p>{{comment.comment}}</p>
 </div>
 {% endfor %}
-<style>
-    input{
-    border:1px solid #39DFE4;
-    border-radius:15px;
-
-    }
-    input:focus{
-    border-color:#3986E4
-    }
-    .comment{
-    padding:10px;
-    border-radius:10px;
-    margin-bottom:10px;
-    background-color:#C1BCBC;
-    border-bottom:solid black 1px
-    }
-    .comment a{
-    display:inline;
-    }
-    .comment p{
-    display:inline;
-    }
-    .user-photo{
-    display:block;
-    background-color:#62C8D8;
-    border-radius:3px;
-    padding:3px
-    }
-    .detail-photo{
-        max-width:300px
-    }
-
-</style>
 {% endblock %}

@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
 {% block section %}
-<h1 class="text-center">Bienvenido!</h1>
 <div class="row">
     {% for gift in gifts_list %}
-    {% if forloop.counter0|divisibleby:3%}
+    {% if forloop.counter0|divisibleby:4%}
 </div>
 <div class="row">
     {% endif %}
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="well well-custom" style="display:inline-block;">
-             <a href="{% url 'detail_gift' gift.pk %}"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="300" style="display:block"></a>
+            <div class="img-home"><a href="{% url 'detail_gift' gift.pk %}"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="250" style="display:block" class="img-home"></a><button id="{{gift.pk}}"class="btn btn-primary button-img">+</button></div>
             <p>User: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">{{gift.owners.username}}</a></p>
             <p>Profile: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline"> {{gift.profile.name}}</a></p>
         </div>
@@ -35,23 +34,4 @@
             </div>
         </div>
     </div>
-    <style>
-        img{
-            margin-bottom:10px;
-        }
-        img:hover{
-    		opacity: 0.6;
-            filter: grayscale(100)
-        }
-        img:hover~#b{
-            display: block;
-        }
-        .well-custom{
-            background-color:white;
-            border: 1px solid #9F9C9C
-        }
-        .well-custom img{
-            border-bottom:1px solid #9F9C9C
-        }
-    </style>
     {% endblock %}

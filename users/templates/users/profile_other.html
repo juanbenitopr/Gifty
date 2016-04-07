@@ -3,35 +3,33 @@
     {% block section %}
     <h1>{{other_user.username}}</h1>
     {% for list in lists %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>{{list.name}}</h3>
-            </div>
-            <div class="panel-body">
-            {% for gift in list.gifts.all %}
-            <div style="display:inline-block">
-                <a href="{% url 'detail_gift' gift.pk %}"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a>
-            </div>
-                </div>
-            {% endfor %}
-            </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>{{list.name}}</h3>
+        <h4>Profile asociado:  {{list.profile.name}}</h4>
+    </div>
+    <div class="panel-body">
+        {% if not list.gifts.all %}
+            No hay regalos!
+        {% endif %}
+        {% for gift in list.gifts.all %}
+        <a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a>
         {% endfor %}
-<style>
-    .well{
-        padding:10px
-    }
-</style>
+    </div>
+</div>
+{% endfor %}
+
 {% for profile in profiles %}
-<div class="well">
+<div class="well well-profile">
     <p> Name:{{profile.name}}</p>
     <p>Age:{{profile.age}}</p>
     <p>Gender: {{profile.gender}}</p>
+     {% for like in likes_user.all %}
+        {% if like.profile == profile %}
+        {{like.like}}
+    {% endif %}
+    {% endfor %}
     <button class="btn btn-warning">Seguir</button>
 </div>
 {% endfor %}
-<style>
-    .well{
-    padding-left:20px
-    }
-</style>
     {% endblock %}

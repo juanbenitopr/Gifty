@@ -1,0 +1,81 @@
+  body {
+      background-color: #E9E9E1
+  }
+  
+  section {
+      padding: 30px;
+      background-color: #E9E9E1;
+      border-radius: 5px;
+  }
+  
+  img {
+      margin-bottom: 10px;
+  }
+  
+  img:hover {
+      opacity: 0.6;
+      filter: grayscale(100)
+  }
+  
+  img:hover~#b {
+      display: block;
+  }
+  
+  .well-custom {
+      background-color: white;
+      border: 1px solid #9F9C9C
+  }
+  
+  .well-custom img {
+      border-bottom: 1px solid #9F9C9C
+  }
+  
+  .well-profile {
+      padding: 10px;
+      padding-left: 20px
+  }
+  
+  input {
+      border: 1px solid #39DFE4;
+      border-radius: 15px;
+  }
+  
+  input:focus {
+      border-color: #3986E4
+  }
+  
+  .comment {
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background-color: #C1BCBC;
+      border-bottom: solid black 1px
+  }
+  
+  .comment a {
+      display: inline;
+  }
+  
+  .comment p {
+      display: inline;
+  }
+  
+  .user-photo {
+      display: block;
+      background-color: #62C8D8;
+      border-radius: 3px;
+      padding: 3px
+  }
+  
+  .detail-photo {
+      max-width: 300px
+  }
+  .detail-photo>img{
+      margin-bottom:0
+  }
+.button-img{
+    position: absolute;
+    right: 5%;
+    bottom: 25%;
+    display:none;
+}

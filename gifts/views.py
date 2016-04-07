@@ -97,6 +97,13 @@ class DetailGift(View):
             }
             return render(request,'gifts/detail_gift.html',context)
 
+class AddGiftToList(View):
+     def post(self,request,pk):
+         gift = Gift.objects.filter(pk=pk)
+         profile = Profile.objects.filter(owner=request.user,is_default = True)
+         list = List.objects.filter(user=request.user,profile=profile)
+         gift_member = GiftsMember.create(list=list,gift=gift)
+         gift_member.save()
 
 @login_required(login_url='users/login.html')
 def create_list(request):

@@ -139,7 +139,6 @@ class SelfData(View):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
-        li = query_list[1]
         context = {
             'gifts_list':query_list,
             'profiles':query_profile,
