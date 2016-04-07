@@ -16,7 +16,10 @@
       opacity: 0.6;
       filter: grayscale(100)
   }
-  
+
+  .well p {
+    margin-left:4%
+  }
   img:hover~#b {
       display: block;
   }
