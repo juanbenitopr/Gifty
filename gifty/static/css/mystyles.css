@@ -76,9 +76,63 @@
   .detail-photo>img{
       margin-bottom:0
   }
-.button-img{
+.dropdown-img{
     position: absolute;
-    right: 5%;
-    bottom: 25%;
+    right: 30px;
+    bottom:100px;
     display:none;
+}
+.navbar-right{
+    padding-right: 30px;
+}
+.select-custom{
+    background-image: linear-gradient(to bottom, #fff 0%, #f8f8f8 100%);
+    min-height: 100%;
+    border-radius: 0;
+    
+}
+.tagit-custom{
+    max-width: 300px;
+    border-radius: 10px;
+    min-height: 100px;
+    background-color: white
+}
+.dropdown-menu>li>p{
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.4285713;
+    color:#333;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.dropdown-menu>li>p{
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.4285713;
+    color:#333;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.dropdown-menu>li>p:hover{
+    background-color:#e7e7e7
+}
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.42;
+    border-radius: 20px;
+    position:fixed;
+    right:5%;
+    bottom:5%;
+}
+.login{
+    background-color: aqua;
+    padding:15px 15px;
 }

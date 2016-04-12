@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
 
 {% block section %}
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#myTags").tagit();
-    });
-</script>
+
 <form method="post">
     {% csrf_token %}
 
@@ -19,6 +15,6 @@
     </div>
 </form>
 {% for error in errors %}
-
+    {{error}}
 {% endfor %}
 {% endblock %}

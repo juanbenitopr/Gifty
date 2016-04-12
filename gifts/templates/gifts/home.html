@@ -8,29 +8,50 @@
     {% endif %}
     <div class="col-md-3">
         <div class="well well-custom" style="display:inline-block;">
-            <div class="img-home"><a href="{% url 'detail_gift' gift.pk %}"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="250" style="display:block" class="img-home"></a><button id="{{gift.pk}}"class="btn btn-primary button-img">+</button></div>
-            <p>User: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">{{gift.owners.username}}</a></p>
-            <p>Profile: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline"> {{gift.profile.name}}</a></p>
+            <div class="img-home">
+                <a href="{% url 'detail_gift' gift.pk %}">
+                    <img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="250" style="display:block"
+                         class="img-home">
+                </a>
+                <div class="dropdown dropdown-img">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        +
+                    </button>
+                    <ul class="dropdown-menu" id="{{gift.pk}}" aria-labelledby="dropdownMenu1">
+                        {% for profile in profiles %}
+                        <li><p class="profile-gift" id="{{profile.pk}}">{{profile.name}}</p></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <p>User: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">{{gift.owners.username}}</a>
+            </p>
+            <p>Profile: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">
+                {{gift.profile.name}}</a></p>
         </div>
     </div>
     {% endfor %}
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#create_gift_modal" style="position:fixed">
+    <button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#create_gift_modal">
         <span class="glyphicon glyphicon-upload"></span>
     </button>
     <div class="modal fade" id="create_gift_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Create Gift</h4>
                 </div>
+                <form method="post">
+                    {% csrf_token %}
                 <div class="modal-body">
-                    {{form_create.as_table}}
+                    <table>
+                        {{form_create.as_table}}
+                    </table>
                 </div>
-                <div class="modal-footer" style="padding:15px">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
             </div>
         </div>
     </div>

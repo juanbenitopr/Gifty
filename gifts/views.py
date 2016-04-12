@@ -3,13 +3,13 @@ from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.base import View
 from django.views.generic.detail import DetailView
 
 from gifts.forms import GiftForm, CommentForm
 from gifts.models import Gift, PUBLIC, GiftsMember, List, CommentGift
 from users.models import Profile
-
 
 class HomeGifts(View):
 
@@ -19,21 +19,54 @@ class HomeGifts(View):
             return redirect('login')
 
         gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(owners=request.user)).order_by('-created_at')
+        profiles = Profile.objects.filter(owner=request.user)
         form_create = GiftForm()
+        form_create.fields.get('profile').queryset =  form_create.fields.get('profile').queryset.filter(owner=request.user)
         context = {
             'gifts_list':gifts,
-            'form_create':form_create
+            'form_create':form_create,
+            'profiles':profiles
         }
         return render(request,'gifts/home.html',context)
+    @method_decorator(login_required())
+    def post(self,request):
+        gift_owner = Gift()
+        gift_owner.owners = request.user
+        form = GiftForm(request.POST, request.FILES, instance=gift_owner)
+        if form.is_valid():
+            form.save()
+            profile = form.cleaned_data.get('profile')
+            if profile is not None:
+                list  = List.objects.filter(user=request.user,profile=form.cleaned_data.get('profile'))
+            else:
+                list  = List.objects.filter(user=request.user,profile=Profile.objects.filter(owner = request.user,is_default=True))
+            gift_list = GiftsMember.objects.create(gift=gift_owner,list =list[0])
+            gift_list.save()
+            gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(owners=request.user)).order_by('-created_at')
+            profiles = Profile.objects.filter(owner=request.user)
+            form_create = GiftForm()
+            form_create.fields.get('profile').queryset =  form_create.fields.get('profile').queryset.filter(owner=request.user)
+            context = {
+                'gifts_list':gifts,
+                'form_create':form_create,
+                'profiles':profiles
+            }
+        else:
+            context = {
+                'error':form.errors
+            }
+        return  render(request,'gifts/home.html',context)
 
 class CreateGift(View):
 
     @method_decorator(login_required())
     def get(self,request):
         new_gift = GiftForm()
+        profiles = Profile.objects.filter(owner=request.user)
         new_gift.fields.get('profile').queryset =  new_gift.fields.get('profile').queryset.filter(owner=request.user)
         context = {
-            'gifts_form':new_gift
+            'gifts_form':new_gift,
+            'profiles':profiles
         }
         return render(request,'gifts/create_gift.html',context)
 
@@ -72,10 +105,12 @@ class DetailGift(View):
          if gift is not None:
              form  = CommentForm()
              comments = CommentGift.objects.filter(gift=gift)
+             profiles = Profile.objects.filter(owner=request.user)
              context = {
                  'gift':gift,
                  'form_coment':form,
-                 'comments':comments
+                 'comments':comments,
+                 'profiles':profiles
              }
              return render(request,'gifts/detail_gift.html',context)
          else:
@@ -98,12 +133,16 @@ class DetailGift(View):
             return render(request,'gifts/detail_gift.html',context)
 
 class AddGiftToList(View):
-     def post(self,request,pk):
-         gift = Gift.objects.filter(pk=pk)
-         profile = Profile.objects.filter(owner=request.user,is_default = True)
-         list = List.objects.filter(user=request.user,profile=profile)
-         gift_member = GiftsMember.create(list=list,gift=gift)
-         gift_member.save()
+
+     def post(self,request):
+         if request.is_ajax() and request.POST:
+             id_profile = int(request.POST.get('id_profile'))
+             id_gift = int(request.POST.get('id_gift'))
+             gift = Gift.objects.filter(pk=id_gift)[0]
+             profile = Profile.objects.filter(pk=id_profile)
+             list = List.objects.filter(user=request.user,profile=profile)[0]
+             GiftsMember.objects.create(list=list,gift=gift)
+             return HttpResponse('conseguido')
 
 @login_required(login_url='users/login.html')
 def create_list(request):

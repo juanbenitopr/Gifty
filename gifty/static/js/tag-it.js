@@ -126,6 +126,7 @@
 
             this.tagInput = $('<input type="text" />').addClass('ui-widget-content');
 
+
             if (this.options.readOnly) this.tagInput.attr('disabled', 'disabled');
 
             if (this.options.tabIndex) {
@@ -174,6 +175,7 @@
             this.tagList
                 .addClass('tagit')
                 .addClass('ui-widget ui-widget-content ui-corner-all')
+                .addClass('tagit-custom')
                 // Create the input field.
                 .append($('<li class="tagit-new"></li>').append(this.tagInput))
                 .click(function(e) {

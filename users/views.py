@@ -44,6 +44,10 @@ class CreateUser(View):
             profile.save()
             list = List.objects.create(user=user,profile=profile,name=name_list)
             list.save()
+            likes = form.data.get("myTags")
+            likes_list = likes.split(',')
+            for like in likes_list:
+                LikesUser.objects.create(like=like,user=user,profile=profile)
             return redirect(request.GET.get('next','login'))
 
 
@@ -92,7 +96,7 @@ class ProfileView(View):
     @method_decorator(login_required())
     def get(self,request):
 
-        profile = Profile.objects.order_by('-created_at').select_related('owner')
+        profile = Profile.objects.order_by('-created_at').filter(owner = request.user).select_related('owner')
         form = ProfileForm()
         context = {
             'profiles':profile,
