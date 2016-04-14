@@ -60,41 +60,15 @@ class HomeGifts(View):
 class CreateGift(View):
 
     @method_decorator(login_required())
-    def get(self,request):
-        new_gift = GiftForm()
-        profiles = Profile.objects.filter(owner=request.user)
-        new_gift.fields.get('profile').queryset =  new_gift.fields.get('profile').queryset.filter(owner=request.user)
-        context = {
-            'gifts_form':new_gift,
-            'profiles':profiles
-        }
-        return render(request,'gifts/create_gift.html',context)
-
-    @method_decorator(login_required())
     def post(self,request):
-        gift_owner = Gift()
-        gift_owner.owners = request.user
-        form = GiftForm(request.POST, request.FILES, instance=gift_owner)
-        if form.is_valid():
-            form.save()
-            profile = form.cleaned_data.get('profile')
-            if profile is not None:
-                list  = List.objects.filter(user=request.user,profile=form.cleaned_data.get('profile'))
-            else:
-                list  = List.objects.filter(user=request.user,profile=Profile.objects.filter(owner = request.user,is_default=True))
-            gift_list = GiftsMember.objects.create(gift=gift_owner,list =list[0])
-            gift_list.save()
-            form = GiftForm()
-            success_message = 'Guardado con exito'
-            context = {
-                'form':form,
-                 'success_message':success_message
-            }
-        else:
-            context = {
-                'error':form.errors
-            }
-        return  render(request,'gifts/create_gift.html',context)
+        if request.is_ajax() and request.POST:
+            objects_upload = request.POST
+            profile_pk = objects_upload.get('profile')
+            profile = Profile.objects.filter(pk=profile_pk)[0]
+            list = List.objects.filter(profile=profile)[0]
+            gift = Gift.objects.create(name=objects_upload.get('name'),profile=profile,owners = request.user,photo=request._files.get('photo'),description=objects_upload.get('description'),prize = objects_upload.get('precio'),visibility=objects_upload.get('visibility'))
+            GiftsMember.objects.create(gift=gift,list = list)
+            return HttpResponse('Conseguido')
 
 class DetailGift(View):
 

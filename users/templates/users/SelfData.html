@@ -1,42 +1,121 @@
 {% extends 'base.html' %}
 
 {% block section %}
+<button class="btn btn-default" data-toggle="modal" data-target="#create_list_modal">Crear Lista</button>
+<button class="btn btn-default" data-toggle="modal" data-target="#create_profile_modal">Crear Profile</button>
 {% for list in gifts_list %}
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>{{list.name}}</h3>
-        <h4>Profile asociado:  {{list.profile.name}}</h4>
+    <div class="panel-heading panel-heading-custom">
+        <div class="list-name">
+            <h3>{{list.name}}</h3>
+            <h4 style="display:inline-block">Profile asociado:  {{list.profile.name}}</h4>
+            {% for like in likes_user.all %}
+            {% if like.profile == list.profile %}
+            <div class="like">{{like.like}}</div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="list-profile">
+            <p> Name:{{list.profile.name}}</p>
+            <p>Age:{{list.profile.age}}</p>
+            <p>Gender: {{list.profile.gender}}</p>
+
+        </div>
+        <button role="button" class="btn btn-primary"> Editar </button>
     </div>
     <div class="panel-body">
         {% for gift in list.gifts.all %}
         <a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a>
         {% empty %}
-            No hay regalos!
+        No hay regalos!
         {% endfor %}
     </div>
 </div>
 {% endfor %}
+    <div class="modal fade" id="create_list_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create List</h4>
+                </div>
+                {% csrf_token %}
+                <div class="modal-body modal-body-custom">
+                    <div class="form-create-gift">
+                        <div class="input-form">
+                            <p>Perfil: </p><select name="profiles" id="profiles" class="selectpicker">
+                            {% for profile in profiles %}
+                            <option value="{{profile.pk}}">{{profile.name}}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                        <div class="input-form">
+                            <p>Name: </p><input type="text" name="name" id="name">
+                        </div>
+                        <div class="input-form">
+                            <p>Visib: </p>
+                            <select name="visibility" id="visibility" class="selectpicker">
+                                <option value="PUB">Publica</option>
+                                <option value="PRIV">Privada</option>
+                            </select>
+                        </div>
+                        <p>Caracteristicas: </p>
+                        <input id="caract" type="text"name="caract">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="upload" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="create_profile_modal" tabindex="-1" role="dialog" aria-labelledby="CreateListModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="CreateListModal">Create Profile</h4>
+                </div>
+                {% csrf_token %}
+                <div class="modal-body modal-body-custom">
+                    <div class="form-create-gift">
+                        <div class="input-form">
+                            <p>Name: </p><input type="text" name="name_data" id="name_data">
+                        </div>
+                        <div class="input-form">
+                            <p>Visib: </p>
+                            <select name="vis_data" id="vis_data" class="selectpicker">
+                                <option value="PUB">Publica</option>
+                                <option value="PRIV">Privada</option>
+                            </select>
+                        </div>
+                        <p>Caracteristicas: </p>
+                        <input id="topic_data" type="text"name="topic_data">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="upload_data" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
 <style>
     .well{
-        padding:10px
+        padding:10px;
+        padding-left:20px;
     }
 </style>
-{% for profile in profiles %}
+<!--{% for profile in profiles %}
 <div class="well">
     <p> Name:{{profile.name}}</p>
     <p>Age:{{profile.age}}</p>
     <p>Gender: {{profile.gender}}</p>
     {% for like in likes_user.all %}
-        {% if like.profile == profile %}
-        {{like.like}}
+    {% if like.profile == profile %}
+    <div class="like">{{like.like}}</div>
     {% endif %}
     {% endfor %}
     <button role="button" class="btn btn-primary"> Editar </button>
 </div>
-{% endfor %}
-<style>
-    .well{
-    padding-left:20px
-    }
-</style>
+{% endfor %}-->
 {% endblock %}

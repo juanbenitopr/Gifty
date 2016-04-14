@@ -10,27 +10,32 @@
     <link rel="stylesheet" href="{% static 'css/jquery.tagit.css' %}">
     <link rel="stylesheet" href="{% static 'css/mystyles.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static 'css/star-rating.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'css/theme-krajee-svg.css' %}" media="all">
     <!-- jQuery library -->
     <script src="{% static 'js/jquery.js'%}"></script>
     <script src="{% static 'js/jquery-ui.js'%}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
     <script src ="{% static 'js/tag-it.js'%}"></script>
     <script src ="{% static 'js/myfunctions.js'%}"></script>
     <script src ="{% static 'js/bootstrap-select.js'%}"></script>
     <script src ="{% static 'js/i18n/defaults-*.min.js'%}"></script>
+    <script src ="{% static 'js/star-rating.js'%}"></script>
 
 
     <!-- Latest compiled JavaScript -->
-    <script src="{% static 'js/bootstrap.js' %}"></script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" style="height:7%;padding-bottom:0">
     {% block nav %}
     <div class="navbar-header">
-        <a class="navbar-brand" href="{% url 'home' %}">HOME</a>
+        <a class="navbar-brand" href="{% url 'home' %}">Gifty</a>
     </div>
     <ul class="nav navbar-nav">
         {% if user.is_authenticated %}
-        <li><a href="{% url 'home' %}">HOME</a></li>
+        <li><a href="{% url 'home' %}">Inicio</a></li>
         <li> <a href="{% url 'profile' %}">Perfil</a></li>
         <li><a href="{% url 'self_data' %}">SelfData</a></li>
         {% else %}
@@ -40,16 +45,20 @@
     </ul>
     {% if user.is_authenticated %}
     <ul class="nav navbar-nav navbar-right">
-        <li><select class="selectpicker selectpicker-custom">
-            {% for profile in profiles %}
-            <option value="{{profile.pk}}">{{profile.name}}</option>
-            {% endfor %}
-        </select></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perfiles<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                {% for profile in profiles %}
+                <li><a href="{{profile.pk}}">{{profile.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
         <li><a href="{% url  'logout' %}">Logout</a></li>
     </ul>
     {% endif %}
     {% endblock %}
 </nav>
+{% if user.is_authenticated %}
 <div class="container" style="margin-top:5%">
 
     <section>
@@ -57,27 +66,14 @@
     </section>
     <hr>
     <small>{% block footer %}Gifty!{% endblock %}</small>
+
 </div>
-    <div class="modal fade" id="create_gift_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="ModalProfile">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Create Gift</h4>
-                </div>
-                <form method="post">
-                    {% csrf_token %}
-                <div class="modal-body">
-                    <table>
-                        {{form_create.as_table}}
-                    </table>
-                </div>
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </form>
-            </div>
-        </div>
-    </div>
+{% else %}
+<div id="content">
+    <section style = "padding:0;margin:0;">
+        {% block sect %}{% endblock %}
+    </section>
+</div>
+{% endif  %}
 </body>
 </html>

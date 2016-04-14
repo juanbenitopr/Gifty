@@ -8,11 +8,11 @@
       border-radius: 5px;
   }
   
-  img {
+  .img-custom {
       margin-bottom: 10px;
   }
   
-  img:hover {
+  .img-custom:hover {
       opacity: 0.6;
       filter: grayscale(100)
   }
@@ -39,12 +39,13 @@
   }
   
   input {
-      border: 1px solid #39DFE4;
-      border-radius: 15px;
+      border: 1px solid #9F9C9C;
+      border-radius: 5px;
+      padding: 5px
   }
   
   input:focus {
-      border-color: #3986E4
+      border-color: black
   }
   
   .comment {
@@ -97,7 +98,7 @@
     min-height: 100px;
     background-color: white
 }
-.dropdown-menu>li>p{
+.dropdown-menu>li>a{
     display: block;
     padding: 3px 20px;
     clear: both;
@@ -132,7 +133,69 @@
     right:5%;
     bottom:5%;
 }
-.login{
-    background-color: aqua;
-    padding:15px 15px;
+#content~section{
+    padding:0;
+    margin:0;
+}
+.panel-login{
+    position: absolute;
+    right: 10%;
+    top:15%;
+    background-color: white;
+    padding:15px;
+    border-radius: 5px
+}
+.panel-login input{
+    margin:6px    
+}
+
+#content{
+    max-width: 100%;
+    
+    min-height: 100%;
+}
+#content img{
+    max-width: 100%;
+}
+.like{
+    background-color: dodgerblue;
+    color:white;
+    border-radius: 3px;
+    padding:3px;
+    display: inline-block;
+    border:1px solid black;
+}
+.list-name{
+    float:left;
+}
+.list-profile{
+    float:right;
+    padding-right: 30px;
+
+}
+.panel-heading-custom{
+    min-height: 100px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+.navbar-brand{
+    border-right: 0.5px solid black
+}
+.input-form{
+    
+}
+.input-form p{
+    display: inline-block
+}
+.input-form input{
+    display: inline-block;
+}
+.modal-body-custom{
+    padding:15px;
+}
+.modal-body-custom input{
+    margin:10px;
+}
+.modal-body-custom .bootstrap-select{
+    margin-left:10px!important;
 }

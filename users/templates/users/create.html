@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
-    {% block section%}
-<form method="post">
-    {% csrf_token %}
-    <table>
-        {{ form_user.as_table }}
-    </table>
-                <input id="myTags" type="text"name="myTags">
+    {% block sect%}
+{% load staticfiles %}
+<div class="login">
+    <img src="{% static 'img/photodune-6745585-modern-creative-workspace-m.jpg'%}" alt="" style="margin-bottom:0">
+    <div class="panel-login">
+        <a class="btn btn-block btn-social btn-facebook" style="margin-bottom:5px">Log in with facebook
+        </a>
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                {{ form_user.as_table }}
+            </table>
+            <input id="myTags" type="text"name="myTags">
 
-    <div>
-        <button>Entrar</button>
+            <div>
+                <button class="btn btn-primary">Registrarse</button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
 {% endblock %}

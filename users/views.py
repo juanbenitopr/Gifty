@@ -93,51 +93,21 @@ class LogoutView(View):
 
 class ProfileView(View):
 
-    @method_decorator(login_required())
-    def get(self,request):
-
-        profile = Profile.objects.order_by('-created_at').filter(owner = request.user).select_related('owner')
-        form = ProfileForm()
-        context = {
-            'profiles':profile,
-            'form_profile':form
-        }
-
-        return render(request,'users/profile.html',context)
-
-    @method_decorator(login_required())
     def post(self,request):
-        profile_new = Profile()
-        profile_new.owner = request.user
-        form = ProfileForm(request.POST,instance=profile_new)
-        if form.is_valid():
-            form.save()
-            like_list = form.data.get('myTags')
+        if request.is_ajax() and request.POST:
+            name_profile = request.POST.get('name')
+            visibility = request.POST.get('visibility')
+            profile_new = Profile.objects.create(name=name_profile,visibility=visibility,owner = request.user)
+            like_list = request.POST.get('like_list')
             like_split = like_list.split(",")
             for like in like_split:
                 likes_user = LikesUser.objects.create(user = request.user,profile=profile_new,like = like)
                 likes_user.save()
-            name_list = form.cleaned_data.get('name')+'_List'
-            list = List.objects.create(user=request.user,name=name_list,profile = profile_new,visibility=PUBLIC)
-            list.save()
-            form_profile = ProfileForm()
-            context = {
-                'form_profile':form_profile,
-                'success_message':'Guardado!',
-                'error':[]
-            }
-            return render(request,'users/profile.html',context)
-        else:
-            form_profile = ProfileForm()
-            context = {
-                'form_profile':form_profile,
-                'success_message':'No se ha podido guardar!',
-                'errors':form.errors
-                }
-            return render(request,'users/profile.html',context)
+            name_list = name_profile+'_List'
+            List.objects.create(user=request.user,name=name_list,profile = profile_new,visibility=PUBLIC)
+            return HttpResponse('Conseguido')
 
 class SelfData(View):
-
     @method_decorator(login_required())
     def get(self,request):
         query_profile = Profile.objects.filter(owner=request.user)
@@ -167,8 +137,12 @@ class OtherData(View):
             }
             return render(request,'users/profile_other.html',context)
 
-@login_required(login_url='users/login.html')
-def addGiftLikeProfile(request):
-    if request.method == 'POST':
-        pass
-    pass
+class CreateList(View):
+
+    def post(self,request):
+        if request.is_ajax() and request.POST:
+            profile = Profile.objects.filter(pk = request.POST.get('profile'))[0]
+            name = request.POST.get('name')
+            visibility = request.POST.get('visibility')
+            List.objects.create(profile=profile,user=request.user,visibility=visibility,name=name)
+            return HttpResponse('Consgeuido')

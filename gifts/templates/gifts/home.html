@@ -10,7 +10,7 @@
         <div class="well well-custom" style="display:inline-block;">
             <div class="img-home">
                 <a href="{% url 'detail_gift' gift.pk %}">
-                    <img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="250" style="display:block"
+                    <img class="img-custom" src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="250" style="display:block"
                          class="img-home">
                 </a>
                 <div class="dropdown dropdown-img">
@@ -42,16 +42,43 @@
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Create Gift</h4>
                 </div>
-                <form method="post">
-                    {% csrf_token %}
-                <div class="modal-body">
-                    <table>
-                        {{form_create.as_table}}
-                    </table>
+                {% csrf_token %}
+                <div class="modal-body modal-body-custom">
+                    <div class="form-create-gift">
+                        <div class="input-form">
+                            <p>Perfil: </p><select name="profiles" id="profiles" class="selectpicker">
+                            {% for profile in profiles %}
+                            <option value="{{profile.pk}}">{{profile.name}}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                        <div class="input-form">
+                            <p>Name: </p><input type="text" name="name" id="name">
+                        </div>
+                        <div class="input-form">
+                            <p>Foto: </p>
+                            <input type="file"name="photo" id="photo">
+                        </div>
+                        <div class="input-form">
+                            <p>Precio</p>
+                            <input type="number" id="precio">
+                        </div>
+                        <div class="input-form">
+                            <p>Visib: </p>
+                            <select name="visibility" id="visibility" class="selectpicker">
+                                <option value="PUB">Publica</option>
+                                <option value="PRIV">Privada</option>
+                            </select>
+                        </div>
+                        <p>Descripción: </p>
+                        <textarea type="text" rows="5" id="description"></textarea>
+
+                        <p>Caracteristicas: </p>
+                        <input id="caract" type="text"name="caract">
+                    </div>
                 </div>
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </form>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="upload" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>

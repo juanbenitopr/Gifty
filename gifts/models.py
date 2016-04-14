@@ -56,7 +56,12 @@ class ScoreGift(models.Model):
     score = models.IntegerField()
     gift = models.ForeignKey(Gift)
     user = models.ForeignKey(User)
+
 class LikeGiftProfile(models.Model):
     profile = models.ForeignKey(Profile)
     list = models.ForeignKey(List)
+    gift = models.ForeignKey(Gift)
+
+class LikesGift(models.Model):
+    like = models.CharField(max_length=150)
     gift = models.ForeignKey(Gift)
