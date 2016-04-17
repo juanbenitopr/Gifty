@@ -20,12 +20,11 @@ class HomeGifts(View):
 
         gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(owners=request.user)).order_by('-created_at')
         profiles = Profile.objects.filter(owner=request.user)
-        form_create = GiftForm()
-        form_create.fields.get('profile').queryset =  form_create.fields.get('profile').queryset.filter(owner=request.user)
+        lists = List.objects.filter(user = request.user )
         context = {
             'gifts_list':gifts,
-            'form_create':form_create,
-            'profiles':profiles
+            'profiles':profiles,
+            'lists':lists
         }
         return render(request,'gifts/home.html',context)
     @method_decorator(login_required())
@@ -63,10 +62,9 @@ class CreateGift(View):
     def post(self,request):
         if request.is_ajax() and request.POST:
             objects_upload = request.POST
-            profile_pk = objects_upload.get('profile')
-            profile = Profile.objects.filter(pk=profile_pk)[0]
-            list = List.objects.filter(profile=profile)[0]
-            gift = Gift.objects.create(name=objects_upload.get('name'),profile=profile,owners = request.user,photo=request._files.get('photo'),description=objects_upload.get('description'),prize = objects_upload.get('precio'),visibility=objects_upload.get('visibility'))
+            list_pk = objects_upload.get('list')
+            list = List.objects.filter(pk=list_pk)[0]
+            gift = Gift.objects.create(url=objects_upload.get('url'),tienda = objects_upload.get('tienda'), name=objects_upload.get('name'),profile=list.profile,owners = request.user,photo=request._files.get('photo'),description=objects_upload.get('description'),prize = objects_upload.get('precio'),visibility=objects_upload.get('visibility'))
             GiftsMember.objects.create(gift=gift,list = list)
             return HttpResponse('Conseguido')
 
@@ -109,17 +107,24 @@ class DetailGift(View):
 class AddGiftToList(View):
 
      def post(self,request):
+
          if request.is_ajax() and request.POST:
-             id_profile = int(request.POST.get('id_profile'))
+             id_list = int(request.POST.get('id_list'))
              id_gift = int(request.POST.get('id_gift'))
              gift = Gift.objects.filter(pk=id_gift)[0]
-             profile = Profile.objects.filter(pk=id_profile)
-             list = List.objects.filter(user=request.user,profile=profile)[0]
+             list = List.objects.filter(pk=id_list)[0]
              GiftsMember.objects.create(list=list,gift=gift)
              return HttpResponse('conseguido')
 
-@login_required(login_url='users/login.html')
-def create_list(request):
-    if request.method=='GET':
-        List.created(user=request.user)
-        return HttpResponse('Conseguido')
+class CreateList(View):
+    @method_decorator(login_required)
+    def post(self,request):
+        if request.is_ajax() and request.POST:
+            name = request.POST.get('name')
+            visibility = request.POST.get('visibility')
+            if request.POST.get('profile') is not None:
+                profile = Profile.objects.filter(pk = request.POST.get('profile'))[0]
+                List.objects.create(profile=profile,user=request.user,visibility=visibility,name=name)
+            else:
+                List.objects.create(user=request.user,visibility=visibility,name=name)
+            return HttpResponse('Conseguido')

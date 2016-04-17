@@ -26,6 +26,8 @@ class Gift(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     prize = models.FloatField()
     visibility = models.CharField(max_length=4,choices=LICENSES,default=PUBLIC)
+    tienda = models.CharField(max_length=150,null=True)
+    url = models.URLField(null=True)
     def __unicode__(self):
         return self.name
 

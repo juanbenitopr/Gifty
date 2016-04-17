@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 
 # Create your models here.
+from django.db.models import Model
 
 HOMBRE = 'HOMB'
 MUJER = 'MUJ'
@@ -12,6 +13,12 @@ GENDER = (
      (HOMBRE,'Hombre'),
      (MUJER,'Mujer')
 )
+class PhotoUser(Model):
+    photo = models.ImageField(upload_to='users')
+    user = models.OneToOneField(User,null=True)
+    def __unicode__(self):
+        return self.User.username
+
 class Profile(models.Model):
      name = models.CharField(max_length=150)
      owner = models.ForeignKey(User)

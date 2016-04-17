@@ -18,8 +18,8 @@
                         +
                     </button>
                     <ul class="dropdown-menu" id="{{gift.pk}}" aria-labelledby="dropdownMenu1">
-                        {% for profile in profiles %}
-                        <li><p class="profile-gift" id="{{profile.pk}}">{{profile.name}}</p></li>
+                        {% for list in lists %}
+                        <li><p class="profile-gift" id="{{list.pk}}">{{list.name}}</p></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -46,9 +46,9 @@
                 <div class="modal-body modal-body-custom">
                     <div class="form-create-gift">
                         <div class="input-form">
-                            <p>Perfil: </p><select name="profiles" id="profiles" class="selectpicker">
-                            {% for profile in profiles %}
-                            <option value="{{profile.pk}}">{{profile.name}}</option>
+                            <p>Perfil: </p><select name="lists" id="lists" class="selectpicker">
+                            {% for list in lists %}
+                            <option value="{{list.pk}}">{{list.name}}</option>
                             {% endfor %}
                         </select>
                         </div>
@@ -70,6 +70,14 @@
                                 <option value="PRIV">Privada</option>
                             </select>
                         </div>
+                        <div class="input-form">
+                            <p>Tienda: </p>
+                            <input type="text" id="tienda" name="tienda">
+                        </div>
+                        <div class="input-form">
+                            <p>Url Gift: </p>
+                            <input type="text" id="url" name="url">
+                        </div>
                         <p>Descripción: </p>
                         <textarea type="text" rows="5" id="description"></textarea>
 
@@ -77,8 +85,10 @@
                         <input id="caract" type="text"name="caract">
                     </div>
                 </div>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="upload" data-dismiss="modal">Save changes</button>
+                <div class="panel-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="upload" data-dismiss="modal">Save changes</button>
+                </div>
             </div>
         </div>
     </div>

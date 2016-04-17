@@ -9,10 +9,10 @@ class NewUserForm(forms.Form):
     mail = forms.EmailField(label='Email',widget=forms.EmailInput())
     password = forms.CharField(label='Password',widget=forms.PasswordInput())
     name_profile =forms.CharField(label='Nombre de tu perfil')
-    age = forms.IntegerField()
-    gender = forms.ChoiceField(label='Gender',choices=GENDER)
+    age = forms.IntegerField(label='Edad')
+    gender = forms.ChoiceField(label='Genero',choices=GENDER)
     name_list = forms.CharField(label='Nombre de la lista')
-
+    photo = forms.ImageField(label='Foto de usuario')
 
 
 class LoginForm(forms.Form):

@@ -9,10 +9,10 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.contrib.auth import logout, login, authenticate
 
-from gifts.forms import ListGiftForm
-from gifts.models import List, GiftsMember, PUBLIC, LikeGiftProfile
-from users.forms import LoginForm, NewUserForm, ProfileForm
-from users.models import Profile, LikesUser
+from gifts.models import List,PUBLIC
+
+from users.forms import LoginForm, NewUserForm
+from users.models import Profile, LikesUser, PhotoUser
 
 
 class CreateUser(View):
@@ -27,7 +27,7 @@ class CreateUser(View):
         return render(request,'users/create.html',context)
 
     def post(self,request):
-        form = NewUserForm(request.POST)
+        form = NewUserForm(request.POST,request.FILES)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -36,6 +36,7 @@ class CreateUser(View):
             name_profile = form.cleaned_data.get('name_profile')
             name_list = form.cleaned_data.get('name_list')
             age = form.cleaned_data.get('age')
+            photo_user = form.cleaned_data.get('photo')
             user = User.objects.create_user(username,mail,password)
             user.is_active = True
             user.is_staff = False
@@ -44,6 +45,7 @@ class CreateUser(View):
             profile.save()
             list = List.objects.create(user=user,profile=profile,name=name_list)
             list.save()
+            PhotoUser.objects.create(user = user,photo = photo_user)
             likes = form.data.get("myTags")
             likes_list = likes.split(',')
             for like in likes_list:
@@ -93,11 +95,13 @@ class LogoutView(View):
 
 class ProfileView(View):
 
+    @method_decorator(login_required())
     def post(self,request):
         if request.is_ajax() and request.POST:
             name_profile = request.POST.get('name')
-            visibility = request.POST.get('visibility')
-            profile_new = Profile.objects.create(name=name_profile,visibility=visibility,owner = request.user)
+            age_profile = request.POST.get('age')
+            gender =request.POST.get('gender')
+            profile_new = Profile.objects.create(name=name_profile,owner = request.user,gender=gender,age = age_profile)
             like_list = request.POST.get('like_list')
             like_split = like_list.split(",")
             for like in like_split:
@@ -137,12 +141,3 @@ class OtherData(View):
             }
             return render(request,'users/profile_other.html',context)
 
-class CreateList(View):
-
-    def post(self,request):
-        if request.is_ajax() and request.POST:
-            profile = Profile.objects.filter(pk = request.POST.get('profile'))[0]
-            name = request.POST.get('name')
-            visibility = request.POST.get('visibility')
-            List.objects.create(profile=profile,user=request.user,visibility=visibility,name=name)
-            return HttpResponse('Consgeuido')

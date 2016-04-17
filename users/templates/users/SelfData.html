@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block section %}
-<button class="btn btn-default" data-toggle="modal" data-target="#create_list_modal">Crear Lista</button>
-<button class="btn btn-default" data-toggle="modal" data-target="#create_profile_modal">Crear Profile</button>
+<button class="btn btn-default btn-circle btn-circle-custom" data-toggle="modal" data-target="#create_list_modal"><i class="fa fa-list-ol"></i></button>
+<button class="btn btn-default btn-circle btn-circle-top btn-circle-custom" data-toggle="modal" data-target="#create_profile_modal"><i class="fa fa-user-plus"></i></button>
 {% for list in gifts_list %}
 <div class="panel panel-default">
     <div class="panel-heading panel-heading-custom">
@@ -16,89 +16,107 @@
             {% endfor %}
         </div>
         <div class="list-profile">
-            <p> Name:{{list.profile.name}}</p>
-            <p>Age:{{list.profile.age}}</p>
-            <p>Gender: {{list.profile.gender}}</p>
+            <p>Nombre:{{list.profile.name}}</p>
+            <p>Edad:{{list.profile.age}}</p>
+            <p>Género: {{list.profile.gender}}</p>
 
         </div>
         <button role="button" class="btn btn-primary"> Editar </button>
     </div>
     <div class="panel-body">
-        {% for gift in list.gifts.all %}
-        <a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a>
-        {% empty %}
-        No hay regalos!
-        {% endfor %}
+        <div class="jcarousel" >
+            <ul>
+                {% for gift in list.gifts.all %}
+                <li><a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a></li>
+                {% empty %}
+                No hay regalos!
+                {% endfor %}
+            </ul>
+            <a class="jcarousel-control-prev inactive" href="#" data-jcarouselcontrol="true"><</a>
+            <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">></a>
+        </div>
     </div>
 </div>
 {% endfor %}
-    <div class="modal fade" id="create_list_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Create List</h4>
-                </div>
-                {% csrf_token %}
-                <div class="modal-body modal-body-custom">
-                    <div class="form-create-gift">
-                        <div class="input-form">
-                            <p>Perfil: </p><select name="profiles" id="profiles" class="selectpicker">
-                            {% for profile in profiles %}
-                            <option value="{{profile.pk}}">{{profile.name}}</option>
-                            {% endfor %}
+<div class="modal fade" id="create_list_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create List</h4>
+            </div>
+            {% csrf_token %}
+            <div class="modal-body modal-body-custom">
+                <div class="form-create-gift">
+                    <div class="input-form">
+                        <p>Perfil: </p><select name="profiles" id="profiles" class="selectpicker">
+                        {% for profile in profiles %}
+                        <option value="{{profile.pk}}">{{profile.name}}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    <div class="input-form">
+                        <p>Name: </p><input type="text" name="name" id="name">
+                    </div>
+                    <div class="input-form">
+                        <p>Visib: </p>
+                        <select name="visibility" id="visibility" class="selectpicker">
+                            <option value="PUB">Publica</option>
+                            <option value="PRIV">Privada</option>
                         </select>
-                        </div>
-                        <div class="input-form">
-                            <p>Name: </p><input type="text" name="name" id="name">
-                        </div>
-                        <div class="input-form">
-                            <p>Visib: </p>
-                            <select name="visibility" id="visibility" class="selectpicker">
-                                <option value="PUB">Publica</option>
-                                <option value="PRIV">Privada</option>
-                            </select>
-                        </div>
-                        <p>Caracteristicas: </p>
-                        <input id="caract" type="text"name="caract">
                     </div>
+                    <p>Caracteristicas: </p>
+                    <input id="caract" type="text"name="caract">
                 </div>
+            </div>
+            <div class="panel-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="upload" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-primary" id="upload_list" data-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="create_profile_modal" tabindex="-1" role="dialog" aria-labelledby="CreateListModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="CreateListModal">Create Profile</h4>
-                </div>
-                {% csrf_token %}
-                <div class="modal-body modal-body-custom">
-                    <div class="form-create-gift">
-                        <div class="input-form">
-                            <p>Name: </p><input type="text" name="name_data" id="name_data">
-                        </div>
-                        <div class="input-form">
-                            <p>Visib: </p>
-                            <select name="vis_data" id="vis_data" class="selectpicker">
-                                <option value="PUB">Publica</option>
-                                <option value="PRIV">Privada</option>
-                            </select>
-                        </div>
-                        <p>Caracteristicas: </p>
-                        <input id="topic_data" type="text"name="topic_data">
+</div>
+<div class="modal fade" id="create_profile_modal" tabindex="-1" role="dialog" aria-labelledby="CreateListModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="CreateListModal">Create Profile</h4>
+            </div>
+            {% csrf_token %}
+            <div class="modal-body modal-body-custom">
+                <div class="form-create-gift">
+                    <div class="input-form">
+                        <p>Name: </p><input type="text" name="name_profile" id="name_profile">
                     </div>
+
+                    <div class="input-form">
+                        <p>Edad: </p><input type="number" name="age_profile" id="age_profile">
+                    </div>
+                    <div class="input-form">
+                        <p>Por defecto: </p><input type="checkbox" name="is_default" id="is_default">
+                    </div>
+                    <div class="input-form">
+                        <p>Genero: </p>
+                        <select name="gender_profile" id="gender_profile" class="selectpicker">
+                            <option value="MUJ">Mujer</option>
+                            <option value="HOMB">Hombre</option>
+                        </select>
+                    </div>
+                    <p>Caracteristicas: </p>
+                    <input id="topic_profile" type="text"name="topic_profile">
                 </div>
+            </div>
+            <div class="panel-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="upload_data" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-primary" id="upload_profile" data-dismiss="modal">Save changes</button>
             </div>
         </div>
+
     </div>
+</div>
 <style>
     .well{
         padding:10px;
