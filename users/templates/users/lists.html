@@ -1,0 +1,35 @@
+{% extends 'SelfData.html' %}
+{% block content %}
+{% for list in gifts_list %}
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-custom">
+        <div class="list-name">
+            <h4 style="display:inline-block;margin-right:5px">{{list.name}}</h4>
+            {% for like in likes_user.all %}
+            {% if like.profile == list.profile %}
+            <div class="like">{{like.like}}</div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="list-profile">
+
+            <h4 style="display:inline-block">Perfil Asociado:  {{list.profile.name}}</h4>
+
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="jcarousel" >
+            <ul>
+                {% for gift in list.gifts.all %}
+                <li><a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="200" ></a></li>
+                {% empty %}
+                No hay regalos!
+                {% endfor %}
+            </ul>
+            <a class="jcarousel-control-prev inactive" href="#" data-jcarouselcontrol="true"><</a>
+            <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">></a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

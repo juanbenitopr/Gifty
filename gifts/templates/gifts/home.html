@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block section %}
+
 <div class="row">
     {% for gift in gifts_list %}
     {% if forloop.counter0|divisibleby:4%}
@@ -10,18 +11,26 @@
         <div class="well well-custom" style="display:inline-block;">
             <div class="img-home">
                 <a href="{% url 'detail_gift' gift.pk %}">
-                    <img class="img-custom" src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="250" style="display:block"
-                         class="img-home">
+                    <img class="img-custom" src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" width="250" height="" style="display:block;border-radius:4px 4px 0 0">
                 </a>
-                <div class="dropdown dropdown-img">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        +
+                <div class="dropdown-img">
+                    <button class="btn btn-default btn-custom-image" type="button" aria-hidden="true" style="display:inline-block">
+                        <i class="fa fa-gift" style="font-size:1.2em"></i>
                     </button>
-                    <ul class="dropdown-menu" id="{{gift.pk}}" aria-labelledby="dropdownMenu1">
-                        {% for list in lists %}
-                        <li><p class="profile-gift" id="{{list.pk}}">{{list.name}}</p></li>
-                        {% endfor %}
-                    </ul>
+                    <div class="dropdown"  style="display:inline-block">
+                        <button class="btn btn-default dropdown-toggle btn-custom-image" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="fa fa-plus"></i>
+                        </button>
+
+                        <ul class="dropdown-menu" id="{{gift.pk}}" aria-labelledby="dropdownMenu1">
+                            {% for list in lists %}
+                            <li><p class="profile-gift" id="{{list.pk}}">{{list.name}}</p></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="top-img">
+                    <button role="button" class ="btn btn-default btn-custom-image" style="font-weight:bold">Send <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
             <p>User: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">{{gift.owners.username}}</a>
@@ -31,9 +40,10 @@
         </div>
     </div>
     {% endfor %}
-    <button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#create_gift_modal">
-        <span class="glyphicon glyphicon-upload"></span>
+    <button type="button" class="btn btn-default btn-circle btn-circle-custom" data-toggle="modal" data-target="#create_gift_modal">
+        <span class="fa fa-plus"></span>
     </button>
+
     <div class="modal fade" id="create_gift_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

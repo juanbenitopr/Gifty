@@ -3,7 +3,6 @@
   }
   
   section {
-      padding: 30px;
       background-color: #E9E9E1;
       border-radius: 5px;
   }
@@ -11,12 +10,6 @@
   .img-custom {
       margin-bottom: 10px;
   }
-  
-  .img-custom:hover {
-      opacity: 0.6;
-      filter: grayscale(100)
-  }
-
   .well p {
     margin-left:4%
   }
@@ -174,15 +167,9 @@
 
 }
 .panel-heading-custom{
-    min-height: 100px;
+    height: 50px;
     padding-right: 30px;
     padding-bottom: 30px;
-}
-.navbar-brand{
-    border-right: 0.5px solid black
-}
-.input-form{
-    
 }
 .input-form p{
     display: inline-block
@@ -202,19 +189,71 @@
 .btn-circle-top{
     bottom: 12%
 }
-.btn-circle-custom:hover{
-    background-color: #FA1E51;
-    border-color:#FC3A57
+.btn-circle-custom{
+    width: 40px;
+    height: 40px;
+    right:3%;
+    bottom:5%;
+    background-color: #26A69A;
+    border-color:#26A69A;
+    color:white
 }
+.btn-circle-custom-top{
+    width: 40px;
+    height: 40px;
+    right:3%;
+    bottom:12%;
+    background-color: #26A69A;
+    border-color:#26A69A;
+    color:white;
+    
+}
+.btn-circle-custom:hover{
+    width: 60px;
+    height: 60px;
+    right:2%;
+    bottom:3%;
+    border-radius: 30px;
+    background-color: #26A69A;
+    border-color:#26A69A;
+    color:white;
+    font-size:1.2em;
+}
+.btn-circle-custom:focus{
+    color:white;
+    background-color:#26A69A
+}
+.btn-circle-custom-top:hover{
+    width: 60px;
+    height: 60px;
+    right:2%;
+    bottom:10%;
+    border-radius: 30px;
+    background-color: #26A69A;
+    border-color:#26A69A;
+    color:white;
+    font-size:1.2em;
+}
+
 .dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0; 
 }
-.navbar>.nav>li:hover{
-    background-color: #E7E7E7
+.navbar>.nav>.dropdown:hover{
+    background-color: #39b2a6
 }
 .dropdown-menu>li>p{
     margin-left: 0
+}
+.navbar-default .tagit-custom{
+    min-height: 5px;
+    height: 40px;
+    border-radius: 4px 0 0 4px;
+    min-width: 700px;
+    overflow: auto
+}
+.search-button{
+   cursor: pointer;
 }
 
 /*jCarousel*/
@@ -283,3 +322,45 @@ have a fixed width and height (but it's not required).
     cursor: default;
 }
 /*jCarousel*/
+
+.navbar-default a{
+    color: white !important
+}
+.dropdown-menu a{
+    color:black !important
+}
+.navbar-default{
+    background-color:#26A69A;
+    border-color:#26A69A
+}
+.top-img{
+    position:absolute;
+    top:3%;
+    right: 10%;
+    display:none
+}
+.login-logo{
+    position:absolute;
+    top:45%;
+    right:45%
+}
+.btn-custom-image{
+    color:white;
+    background-color: #26A69A;
+    border-color:#26A69A
+}
+.btn-custom-image:hover{
+    background-color: #39b2a6;
+    border-color:#39b2a6;
+    color:white;
+}
+.input-group-custom{
+    margin-top:5px;
+    
+}
+.navbar .form-control-custom{
+    display:none;
+}
+.input-group-custom:hover{
+    background-color: #26A69A!important;
+}

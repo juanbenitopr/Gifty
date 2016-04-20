@@ -122,7 +122,33 @@ class SelfData(View):
             'profiles':query_profile,
             'likes_user':query_likes
         }
-        return render(request,'users/SelfData.html',context)
+        return render(request,'users/my_data.html',context)
+
+class SelfLists(View):
+    @method_decorator(login_required())
+    def get(self,request):
+        query_profile = Profile.objects.filter(owner=request.user)
+        query_list = List.objects.filter(user=request.user)
+        query_likes = LikesUser.objects.filter(user = request.user)
+        context = {
+            'gifts_list':query_list,
+            'profiles':query_profile,
+            'likes_user':query_likes
+        }
+        return render(request,'users/lists.html',context)
+
+class SelfProfiles(View):
+    @method_decorator(login_required())
+    def get(self,request):
+        query_profile = Profile.objects.filter(owner=request.user)
+        query_list = List.objects.filter(user=request.user)
+        query_likes = LikesUser.objects.filter(user = request.user)
+        context = {
+            'gifts_list':query_list,
+            'profiles':query_profile,
+            'likes_user':query_likes
+        }
+        return render(request,'users/profiles.html',context)
 
 class OtherData(View):
 
