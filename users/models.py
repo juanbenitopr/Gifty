@@ -17,7 +17,7 @@ class PhotoUser(Model):
     photo = models.ImageField(upload_to='users')
     user = models.OneToOneField(User,null=True)
     def __unicode__(self):
-        return self.User.username
+        return self.user.username
 
 class Profile(models.Model):
      name = models.CharField(max_length=150)

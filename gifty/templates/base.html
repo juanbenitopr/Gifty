@@ -45,8 +45,8 @@
             <a href="{% url 'self_data' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  style="font-weight:bold">Mi Perfil<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="{% url 'self_data' %}">Mis Datos</a></li>
-                <li><a href="{% url 'self_data' %}">Mis Listas</a></li>
-                <li><a href="{% url 'self_data' %}">Mis Perfiles</a></li>
+                <li><a href="{% url 'self_lists' %}">Mis Listas</a></li>
+                <li><a href="{% url 'self_profiles' %}">Mis Perfiles</a></li>
             </ul>
         </li>
         {% else %}

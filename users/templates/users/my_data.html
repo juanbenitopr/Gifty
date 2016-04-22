@@ -1,5 +1,41 @@
 {% extends 'SelfData.html' %}
 
 {% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="well well-data" style="padding-top:10px;">
+            <img class="img-data" src="{{user_photo.photo.url}}" alt="" width="300">
+            <div class="panel panel-default"  style="margin-top:15px">
+                <div class="panel-heading">
+                    Mi descripción
+                </div>
+                <div class="panel-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores consectetur labore minima, placeat qui reiciendis repudiandae voluptate. Amet aut blanditiis exercitationem sed sint. A accusantium deserunt eum fugiat id nam.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lists-data">
+        {% for list in gifts_list %}
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{list.name}}
+                </div>
+                <div class="panel-body">
+                    <img src="{{ list.gifts.all.0.photo.url }}" alt="{{ list.gifts.all.0.photo.url }}"
+                         height="200">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
 
+        </div>
+    </div>
+</div>
 {% endblock %}

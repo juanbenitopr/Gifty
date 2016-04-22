@@ -45,7 +45,8 @@ class CreateUser(View):
             profile.save()
             list = List.objects.create(user=user,profile=profile,name=name_list)
             list.save()
-            PhotoUser.objects.create(user = user,photo = photo_user)
+            if photo_user is not None:
+                PhotoUser.objects.create(user = user,photo = photo_user)
             likes = form.data.get("myTags")
             likes_list = likes.split(',')
             for like in likes_list:
@@ -117,10 +118,13 @@ class SelfData(View):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
+        user_photo = PhotoUser.objects.filter(user=request.user)[0]
+        list_example = query_list[0].gifts.all()
         context = {
             'gifts_list':query_list,
             'profiles':query_profile,
-            'likes_user':query_likes
+            'likes_user':query_likes,
+            'user_photo':user_photo
         }
         return render(request,'users/my_data.html',context)
 
