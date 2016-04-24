@@ -9,6 +9,10 @@
   
   .img-custom {
       margin-bottom: 10px;
+      object-fit: contain; 
+      object-position: center;
+      height: 300px;
+      width: 250px;
   }
   
   .well p {
@@ -229,7 +233,6 @@
       border-color: #26A69A;
       color: white
   }
-  
   .btn-circle-custom-top {
       width: 40px;
       height: 40px;

@@ -67,6 +67,7 @@
         </li>
         {% endif %}
         <li><a href="{% url  'logout' %}" style="font-weight:bold">Logout</a></li>
+        <li><img class="img-circle" src="{{user_photo.0.photo.url}}" alt="" height="50" ></li>
     </ul>
     {% endif %}
     {% endblock %}

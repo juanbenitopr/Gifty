@@ -1,12 +1,17 @@
 {% extends 'SelfData.html' %}
 
+{% load staticfiles %}
 {% block content %}
 <div class="row">
     <div class="col-md-4">
-        <div class="well well-data" style="padding-top:10px;">
-            <img class="img-data" src="{{user_photo.photo.url}}" alt="" width="300">
+        <div class="well well-data" style="padding-top:10px;padding-left:10px;">
+            {% if user_photo %}
+            <img class="img-data" src="{{user_photo.0.photo.url}}" alt="" width="340">
+            {% else %}
+            <img src="{% static 'img/hombre.png' %}" alt="" width="340">
+            {% endif %}
             <div class="panel panel-default"  style="margin-top:15px">
-                <div class="panel-heading">
+                <div class="panel-heading" style="background-color:#1FB8A9;color:white">
                     Mi descripción
                 </div>
                 <div class="panel-body">
@@ -19,12 +24,16 @@
         {% for list in gifts_list %}
         <div class="col-md-3">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" style="background-color:#1FB8A9;color:white">
                     {{list.name}}
                 </div>
                 <div class="panel-body">
+                    {% if list.gifts.all %}
                     <img src="{{ list.gifts.all.0.photo.url }}" alt="{{ list.gifts.all.0.photo.url }}"
                          height="200">
+                    {% else %}
+                    <p>No hay regalos</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

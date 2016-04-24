@@ -9,7 +9,8 @@ from django.views.generic.detail import DetailView
 
 from gifts.forms import GiftForm, CommentForm
 from gifts.models import Gift, PUBLIC, GiftsMember, List, CommentGift
-from users.models import Profile
+from users.models import Profile, PhotoUser
+
 
 class HomeGifts(View):
 
@@ -21,10 +22,16 @@ class HomeGifts(View):
         gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(owners=request.user)).order_by('-created_at')
         profiles = Profile.objects.filter(owner=request.user)
         lists = List.objects.filter(user = request.user )
+        user_photo = PhotoUser.objects.filter(user=request.user)
+        if user_photo is None:
+            user_photo = None
         context = {
             'gifts_list':gifts,
             'profiles':profiles,
-            'lists':lists
+            'lists':lists,
+            'user_photo':user_photo
+
+
         }
         return render(request,'gifts/home.html',context)
     @method_decorator(login_required())
@@ -78,11 +85,15 @@ class DetailGift(View):
              form  = CommentForm()
              comments = CommentGift.objects.filter(gift=gift)
              profiles = Profile.objects.filter(owner=request.user)
+             user_photo = PhotoUser.objects.filter(user=request.user)
+             if user_photo is None:
+                 user_photo = None
              context = {
                  'gift':gift,
                  'form_coment':form,
                  'comments':comments,
-                 'profiles':profiles
+                 'profiles':profiles,
+                 'user_photo':user_photo
              }
              return render(request,'gifts/detail_gift.html',context)
          else:

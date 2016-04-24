@@ -118,8 +118,9 @@ class SelfData(View):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
-        user_photo = PhotoUser.objects.filter(user=request.user)[0]
-        list_example = query_list[0].gifts.all()
+        user_photo = PhotoUser.objects.filter(user=request.user)
+        if user_photo is None:
+            user_photo = None
         context = {
             'gifts_list':query_list,
             'profiles':query_profile,
@@ -134,10 +135,14 @@ class SelfLists(View):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
+        user_photo = PhotoUser.objects.filter(user=request.user)
+        if user_photo is None:
+            user_photo = None
         context = {
             'gifts_list':query_list,
             'profiles':query_profile,
-            'likes_user':query_likes
+            'likes_user':query_likes,
+            'user_photo':user_photo
         }
         return render(request,'users/lists.html',context)
 
@@ -147,10 +152,15 @@ class SelfProfiles(View):
         query_profile = Profile.objects.filter(owner=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
+        user_photo = PhotoUser.objects.filter(user=request.user)
+        if user_photo is None:
+            user_photo = None
         context = {
             'gifts_list':query_list,
             'profiles':query_profile,
-            'likes_user':query_likes
+            'likes_user':query_likes,
+            'user_photo': user_photo
+
         }
         return render(request,'users/profiles.html',context)
 

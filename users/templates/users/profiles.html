@@ -1,4 +1,30 @@
 {% extends 'SelfData.html' %}
+{% load staticfiles %}
 {% block content %}
-
+{% for profile in profiles %}
+<div class="col-md-4">
+    <div class="well">
+        {% if profile.gender == 'HOMB' %}
+        <img src="{% static 'img/hombre.png' %}" alt="" style="min-width:25%">
+        {% elif profile.gender == 'MUJ' %}
+        <img src="{% static 'img/mujer.jpg' %}" alt="" style="width:60%">
+        {% endif %}
+        <div class="panel panel-default" style="margin-top:10px">
+            <div class="panel-heading">
+                Datos del perfil {{profile.name}} <button class="btn btn-default">Editar</button>
+            </div>
+            <div class="panel panel-body">
+                <div style="display:block">Gustos:
+                    {% for like in likes_user.all %}
+                    {% if like.profile == profile %}
+                    <div class="like">{{like.like}}</div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div style="display:block">Edad: {{profile.age}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
