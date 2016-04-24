@@ -20,7 +20,6 @@ class CreateUser(View):
     def get(self,request):
 
         form_user = NewUserForm()
-
         context = {
             'form_user' : form_user
         }
@@ -41,12 +40,11 @@ class CreateUser(View):
             user.is_active = True
             user.is_staff = False
             user.save()
-            profile = Profile.objects.create(owner = user,name = name_profile,age=age,gender=gender,is_default=True)
+            profile = Profile.objects.create(user = user,name = name_profile,age=age,gender=gender,is_default=True)
             profile.save()
-            list = List.objects.create(user=user,profile=profile,name=name_list)
+            list = List.objects.create(user=user,name=name_list)
             list.save()
-            if photo_user is not None:
-                PhotoUser.objects.create(user = user,photo = photo_user)
+            PhotoUser.objects.create(user = user,photo = photo_user)
             likes = form.data.get("myTags")
             likes_list = likes.split(',')
             for like in likes_list:
@@ -102,7 +100,7 @@ class ProfileView(View):
             name_profile = request.POST.get('name')
             age_profile = request.POST.get('age')
             gender =request.POST.get('gender')
-            profile_new = Profile.objects.create(name=name_profile,owner = request.user,gender=gender,age = age_profile)
+            profile_new = Profile.objects.create(name=name_profile,user = request.user,gender=gender,age = age_profile)
             like_list = request.POST.get('like_list')
             like_split = like_list.split(",")
             for like in like_split:
@@ -115,7 +113,7 @@ class ProfileView(View):
 class SelfData(View):
     @method_decorator(login_required())
     def get(self,request):
-        query_profile = Profile.objects.filter(owner=request.user)
+        query_profile = Profile.objects.filter(user=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
         user_photo = PhotoUser.objects.filter(user=request.user)
@@ -132,7 +130,7 @@ class SelfData(View):
 class SelfLists(View):
     @method_decorator(login_required())
     def get(self,request):
-        query_profile = Profile.objects.filter(owner=request.user)
+        query_profile = Profile.objects.filter(user=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
         user_photo = PhotoUser.objects.filter(user=request.user)
@@ -149,7 +147,7 @@ class SelfLists(View):
 class SelfProfiles(View):
     @method_decorator(login_required())
     def get(self,request):
-        query_profile = Profile.objects.filter(owner=request.user)
+        query_profile = Profile.objects.filter(user=request.user)
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
         user_photo = PhotoUser.objects.filter(user=request.user)
@@ -173,7 +171,7 @@ class OtherData(View):
             return HttpResponse ('Usuario no encontrado')
         else:
             query_list = List.objects.filter(user=other_user)
-            query_profile = Profile.objects.filter(owner = other_user)
+            query_profile = Profile.objects.filter(user = other_user)
             context = {
                 'lists':query_list,
                 'other_user':other_user,

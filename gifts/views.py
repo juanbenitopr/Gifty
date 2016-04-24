@@ -19,8 +19,8 @@ class HomeGifts(View):
         if not request.user.is_authenticated():
             return redirect('login')
 
-        gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(owners=request.user)).order_by('-created_at')
-        profiles = Profile.objects.filter(owner=request.user)
+        gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(user=request.user)).order_by('-created_at')
+        profiles = Profile.objects.filter(user=request.user)
         lists = List.objects.filter(user = request.user )
         user_photo = PhotoUser.objects.filter(user=request.user)
         if user_photo is None:
@@ -30,14 +30,12 @@ class HomeGifts(View):
             'profiles':profiles,
             'lists':lists,
             'user_photo':user_photo
-
-
         }
         return render(request,'gifts/home.html',context)
     @method_decorator(login_required())
     def post(self,request):
         gift_owner = Gift()
-        gift_owner.owners = request.user
+        gift_owner.user = request.user
         form = GiftForm(request.POST, request.FILES, instance=gift_owner)
         if form.is_valid():
             form.save()
@@ -45,13 +43,13 @@ class HomeGifts(View):
             if profile is not None:
                 list  = List.objects.filter(user=request.user,profile=form.cleaned_data.get('profile'))
             else:
-                list  = List.objects.filter(user=request.user,profile=Profile.objects.filter(owner = request.user,is_default=True))
+                list  = List.objects.filter(user=request.user,profile=Profile.objects.filter(user = request.user,is_default=True))
             gift_list = GiftsMember.objects.create(gift=gift_owner,list =list[0])
             gift_list.save()
-            gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(owners=request.user)).order_by('-created_at')
-            profiles = Profile.objects.filter(owner=request.user)
+            gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(user=request.user)).order_by('-created_at')
+            profiles = Profile.objects.filter(user=request.user)
             form_create = GiftForm()
-            form_create.fields.get('profile').queryset =  form_create.fields.get('profile').queryset.filter(owner=request.user)
+            form_create.fields.get('profile').queryset =  form_create.fields.get('profile').queryset.filter(user=request.user)
             context = {
                 'gifts_list':gifts,
                 'form_create':form_create,
@@ -71,7 +69,7 @@ class CreateGift(View):
             objects_upload = request.POST
             list_pk = objects_upload.get('list')
             list = List.objects.filter(pk=list_pk)[0]
-            gift = Gift.objects.create(url=objects_upload.get('url'),tienda = objects_upload.get('tienda'), name=objects_upload.get('name'),profile=list.profile,owners = request.user,photo=request._files.get('photo'),description=objects_upload.get('description'),prize = objects_upload.get('precio'),visibility=objects_upload.get('visibility'))
+            gift = Gift.objects.create(url=objects_upload.get('url'),tienda = objects_upload.get('tienda'), name=objects_upload.get('name'),user = request.user,photo=request._files.get('photo'),description=objects_upload.get('description'),prize = objects_upload.get('precio'),visibility=objects_upload.get('visibility'))
             GiftsMember.objects.create(gift=gift,list = list)
             return HttpResponse('Conseguido')
 
@@ -84,7 +82,7 @@ class DetailGift(View):
          if gift is not None:
              form  = CommentForm()
              comments = CommentGift.objects.filter(gift=gift)
-             profiles = Profile.objects.filter(owner=request.user)
+             lists = List.objects.filter(user=request.user)
              user_photo = PhotoUser.objects.filter(user=request.user)
              if user_photo is None:
                  user_photo = None
@@ -92,7 +90,7 @@ class DetailGift(View):
                  'gift':gift,
                  'form_coment':form,
                  'comments':comments,
-                 'profiles':profiles,
+                 'lists':lists,
                  'user_photo':user_photo
              }
              return render(request,'gifts/detail_gift.html',context)
@@ -133,9 +131,5 @@ class CreateList(View):
         if request.is_ajax() and request.POST:
             name = request.POST.get('name')
             visibility = request.POST.get('visibility')
-            if request.POST.get('profile') is not None:
-                profile = Profile.objects.filter(pk = request.POST.get('profile'))[0]
-                List.objects.create(profile=profile,user=request.user,visibility=visibility,name=name)
-            else:
-                List.objects.create(user=request.user,visibility=visibility,name=name)
+            List.objects.create(user=request.user,visibility=visibility,name=name)
             return HttpResponse('Conseguido')

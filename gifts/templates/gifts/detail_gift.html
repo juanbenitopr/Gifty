@@ -1,26 +1,101 @@
 {% extends 'base.html' %}
 
 {% block section %}
-<div class="well detail-photo">
-    <img src="{{gift.photo.url}}" alt="{{gift.photo.name}}" width="300">
-    <br>
-    <div class="user-photo">
-       <p>User: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">{{gift.owners.username}}</a></p>
-            <p>Profile: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline"> {{gift.profile.name}}</a></p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                <div class="well well-custom" style="max-width:252px">
+                    <div class="img-home">
+                        <a href="{% url 'detail_gift' gift.pk %}">
+                            <img class="img-custom" src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}"
+                                 style="display:block;border-radius:4px 4px 0 0">
+                        </a>
+                        <div class="dropdown-img" style="left:17%">
+                            <button class="btn btn-default btn-custom-image" type="button" aria-hidden="true"
+                                    style="display:inline-block">
+                                <i class="fa fa-gift" style="font-size:1.2em"></i>
+                            </button>
+                            <div class="dropdown" style="display:inline-block">
+                                <button class="btn btn-default dropdown-toggle btn-custom-image" type="button"
+                                        id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+
+                                <ul class="dropdown-menu" id="{{gift.pk}}" aria-labelledby="dropdownMenu1">
+                                    {% for list in lists %}
+                                    <li><p class="profile-gift" id="{{list.pk}}">{{list.name}}</p></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="top-img"style="left:17%;top:5%">
+                            <button role="button" class="btn btn-default btn-custom-image" style="font-weight:bold">Send <i
+                                    class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                    <p>User: <a href="{% url 'other_data' gift.user.pk %}" style="display:inline">{{gift.user.username}}</a>
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <p style="display:inline">Hola! </p><p  style="display:inline">{{user.username}} Deja un comentario</p>
+                        </div>
+                        <div class="panel-body">
+                            <form style="margin-bottom:10px">
+                                {% csrf_token %}
+                                {{form_coment.as_table}}
+                                <button formmethod="post" class="btn btn-primary">Comenta!</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="position:absolute;top:10%;left:40%">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <p>Regalado por: {{user.username}} Precio: {{gift.prize}}€</p>
+                    </div>
+                    <div class="panel-body">
+                        {% for like in likes %}
+                        {% if like.gift == gift %}
+                        <p>Características:{{like}}</p>
+                        {% endif %}
+                        {% endfor %}
+                        {{gift.description}}
+                    </div>
+                </div>
+                    </div>
+            </div>
+        </div>
     </div>
 </div>
-<p style="display:inline">Hola! </p><p  style="display:inline">{{user.username}} </p>
-<p>Deja un comentario y no te olvides de puntuar!</p>
 
-<form style="margin-bottom:10px">
-    {% csrf_token %}
-    {{form_coment.as_table}}
-    <button formmethod="post" class="btn btn-primary">Comenta!</button>
-</form>
+
+
+
+<div class="row">
 {% for comment in comments %}
-<div class="comment">
-    <a href="{% url 'other_data' comment.user.pk %}">{{comment.user}}</a>
-    <p>{{comment.comment}}</p>
+    {% if forloop.counter0|divisibleby:4%}
+</div>
+<div class="row">
+    {% endif %}
+<div class="col-md-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="{% url 'other_data' comment.user.pk %}">{{comment.user}}</a>
+
+        </div>
+        <div class="panel-body">
+            <p>{{comment.comment}}</p>
+
+        </div>
+        <div class="panel-footer">
+            Responde: <input type="text">
+        </div>
+    </div>
 </div>
 {% endfor %}
 {% endblock %}

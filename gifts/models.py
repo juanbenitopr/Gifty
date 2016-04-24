@@ -17,8 +17,7 @@ LICENSES = (
     (PRIVATE,"Private")
 )
 class Gift(models.Model):
-    owners = models.ForeignKey(User)
-    profile = models.ForeignKey(Profile)
+    user = models.ForeignKey(User)
     name = models.CharField(max_length=150)
     photo = models.ImageField(upload_to='gifts')
     description = models.TextField(blank=True,null=True,default="")
@@ -38,7 +37,6 @@ class GiftsCharts(models.Model):
 class List(models.Model):
     name = models.CharField(max_length=150,default='')
     user = models.ForeignKey(User)
-    profile = models.ForeignKey(Profile,null=True,on_delete=CASCADE)
     gifts = models.ManyToManyField(Gift,through='GiftsMember',through_fields=('list','gift'))
     visibility = models.CharField(max_length=4,choices=LICENSES,default=PUBLIC)
     def __unicode__(self):

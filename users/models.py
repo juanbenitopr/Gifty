@@ -21,7 +21,7 @@ class PhotoUser(Model):
 
 class Profile(models.Model):
      name = models.CharField(max_length=150)
-     owner = models.ForeignKey(User)
+     user = models.ForeignKey(User)
      created_at = models.DateTimeField(auto_now_add=True)
      is_default = models.BooleanField(default=False)
      gender = models.CharField(max_length=4,choices=GENDER,default=HOMBRE)

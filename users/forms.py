@@ -12,7 +12,7 @@ class NewUserForm(forms.Form):
     age = forms.IntegerField(label='Edad')
     gender = forms.ChoiceField(label='Genero',choices=GENDER)
     name_list = forms.CharField(label='Nombre de la lista')
-    photo = forms.ImageField(label='Foto de usuario')
+    photo = forms.ImageField(label='Foto de usuario',required=False)
 
 
 class LoginForm(forms.Form):

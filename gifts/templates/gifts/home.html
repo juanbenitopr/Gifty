@@ -39,10 +39,9 @@
                             class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
-            <p>User: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">{{gift.owners.username}}</a>
+            <p>Usuario: <a href="{% url 'other_data' gift.user.pk %}" style="display:inline">{{gift.user.username}}</a>
             </p>
-            <p>Profile: <a href="{% url 'other_data' gift.owners.pk %}" style="display:inline">
-                {{gift.profile.name}}</a></p>
+
         </div>
     </div>
     {% endfor %}
@@ -63,14 +62,14 @@
                 <div class="modal-body modal-body-custom">
                     <div class="form-create-gift">
                         <div class="input-form">
-                            <p>Perfil: </p><select name="lists" id="lists" class="selectpicker">
+                            <p>Lista: </p><select name="lists" id="lists" class="selectpicker">
                             {% for list in lists %}
                             <option value="{{list.pk}}">{{list.name}}</option>
                             {% endfor %}
                         </select>
                         </div>
                         <div class="input-form">
-                            <p>Name: </p><input type="text" name="name" id="name">
+                            <p>Nombre: </p><input type="text" name="name" id="name">
                         </div>
                         <div class="input-form">
                             <p>Foto: </p>
@@ -96,7 +95,7 @@
                             <input type="text" id="url" name="url">
                         </div>
                         <p>Descripción: </p>
-                        <textarea type="text" rows="5" id="description"></textarea>
+                        <textarea type="text" rows="5" id="description" style="border-radius:10px"></textarea>
 
                         <p>Caracteristicas: </p>
                         <input id="caract" type="text" name="caract">
