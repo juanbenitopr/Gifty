@@ -1,35 +1,47 @@
 {% extends 'base.html' %}
 
-    {% block section %}
-    <h1>{{other_user.username}}</h1>
-    {% for list in lists %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>{{list.name}}</h3>
-        <h4>Profile asociado:  {{list.profile.name}}</h4>
-    </div>
-    <div class="panel-body">
-        {% if not list.gifts.all %}
-            No hay regalos!
-        {% endif %}
-        {% for gift in list.gifts.all %}
-        <a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="300" ></a>
-        {% endfor %}
+{% block section %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="well well-data" style="padding-top:10px;padding-left:10px;">
+            <img src="{{other_user.0.photo.url}}" alt="" width="340">
+            <div class="panel panel-default"  style="margin-top:15px">
+                <div class="panel-heading" style="background-color:#1FB8A9;color:white">
+                    {{other_user.0.user.username}}
+                </div>
+                <div class="panel-body">
+                    {{other_user.0.description}}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{% endfor %}
 
-{% for profile in profiles %}
-<div class="well well-profile">
-    <p> Name:{{profile.name}}</p>
-    <p>Age:{{profile.age}}</p>
-    <p>Gender: {{profile.gender}}</p>
-     {% for like in likes_user.all %}
-        {% if like.profile == profile %}
-        {{like.like}}
-    {% endif %}
+<div class="lists-data">
+    {% for list in lists %}
+    <div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:#1FB8A9;color:white">
+                {{list.name}}
+                <button class="btn btn-default" style="position:absolute;top:2%;right:3% ">Seguir</button>
+            </div>
+            <div class="panel-body">
+                <div class="jcarousel" >
+                    <ul>
+                        {% for gift in list.gifts.all %}
+                        <li><a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="150" ></a></li>
+                        {% empty %}
+                        No hay regalos!
+                        {% endfor %}
+                    </ul>
+                    <a class="jcarousel-control-prev inactive" href="#" data-jcarouselcontrol="true"><</a>
+                    <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">></a>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
     {% endfor %}
-    <button class="btn btn-warning">Seguir</button>
 </div>
-{% endfor %}
-    {% endblock %}
+{% endblock %}

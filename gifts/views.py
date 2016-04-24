@@ -18,7 +18,6 @@ class HomeGifts(View):
     def get(self,request):
         if not request.user.is_authenticated():
             return redirect('login')
-
         gifts = Gift.objects.filter(visibility=PUBLIC).filter(~Q(user=request.user)).order_by('-created_at')
         profiles = Profile.objects.filter(user=request.user)
         lists = List.objects.filter(user = request.user )

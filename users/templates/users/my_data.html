@@ -5,11 +5,7 @@
 <div class="row">
     <div class="col-md-4">
         <div class="well well-data" style="padding-top:10px;padding-left:10px;">
-            {% if user_photo %}
-            <img class="img-data" src="{{user_photo.0.photo.url}}" alt="" width="340">
-            {% else %}
             <img src="{% static 'img/hombre.png' %}" alt="" width="340">
-            {% endif %}
             <div class="panel panel-default"  style="margin-top:15px">
                 <div class="panel-heading" style="background-color:#1FB8A9;color:white">
                     Mi descripción
@@ -38,13 +34,6 @@
             </div>
         </div>
         {% endfor %}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <div class="panel panel-default">
-
-        </div>
     </div>
 </div>
 {% endblock %}

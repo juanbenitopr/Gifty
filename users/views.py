@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -44,7 +45,10 @@ class CreateUser(View):
             profile.save()
             list = List.objects.create(user=user,name=name_list)
             list.save()
-            PhotoUser.objects.create(user = user,photo = photo_user)
+            if photo_user:
+                PhotoUser.objects.create(user = user,photo =photo_user)
+            else:
+                PhotoUser.objects.create(user = user,photo ='/static/img/hombre.png')
             likes = form.data.get("myTags")
             likes_list = likes.split(',')
             for like in likes_list:
@@ -169,13 +173,13 @@ class OtherData(View):
         other_user = User.objects.get(pk=pk)
         if other_user is None:
             return HttpResponse ('Usuario no encontrado')
-        else:
-            query_list = List.objects.filter(user=other_user)
-            query_profile = Profile.objects.filter(user = other_user)
-            context = {
-                'lists':query_list,
-                'other_user':other_user,
-                'profiles':query_profile
-            }
-            return render(request,'users/profile_other.html',context)
+        other_user_photo = PhotoUser.objects.filter(user=other_user)
+        if not other_user_photo:
+            other_user_photo = PhotoUser.objects.create(user=other_user,photo='/static/img/hombre.png')
+        query_list = List.objects.filter(user=other_user).filter(visibility = PUBLIC)
+        context = {
+            'lists':query_list,
+            'other_user':other_user_photo
+        }
+        return render(request,'users/profile_other.html',context)
 

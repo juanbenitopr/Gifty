@@ -16,6 +16,7 @@ GENDER = (
 class PhotoUser(Model):
     photo = models.ImageField(upload_to='users')
     user = models.OneToOneField(User,null=True)
+    description = models.CharField(max_length=300,null=True)
     def __unicode__(self):
         return self.user.username
 
