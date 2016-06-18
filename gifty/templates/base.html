@@ -18,11 +18,11 @@
     <script src="{% static 'js/jquery-ui.js'%}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/jquery.jcarousel.js'%}" type="text/javascript"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
-    <script src ="{% static 'js/tag-it.js'%}"></script>
-    <script src ="{% static 'js/myfunctions.js'%}"></script>
-    <script src ="{% static 'js/bootstrap-select.js'%}"></script>
-    <script src ="{% static 'js/i18n/defaults-*.min.js'%}"></script>
-    <script src ="{% static 'js/star-rating.js'%}"></script>
+    <script src="{% static 'js/tag-it.js'%}"></script>
+    <script src="{% static 'js/myfunctions.js'%}"></script>
+    <script src="{% static 'js/bootstrap-select.js'%}"></script>
+    <script src="{% static 'js/i18n/defaults-*.min.js'%}"></script>
+    <script src="{% static 'js/star-rating.js'%}"></script>
 
 
     <!-- Latest compiled JavaScript -->
@@ -36,13 +36,19 @@
     <ul class="nav navbar-nav">
         {% if user.is_authenticated %}
         <li>
-            <div class="input-group input-group-custom">
-                <input type="text" id ="search" class="form-control form-control-custom" placeholder="search" aria-describedby="basic-addon2">
-                <span class="input-group-addon search-button"><i class="fa fa-search"></i></span>
-            </div>
+            <form id="form_search" action="search_gift" method="post">
+                {% csrf_token %}
+                <input type="hidden" id="search-hide" name="caract">
+                <div class="input-group input-group-custom">
+                    <input type="text" id="search" class="form-control form-control-custom" placeholder="search"
+                           aria-describedby="basic-addon2">
+                    <span class="input-group-addon search-button" id="search-button"><i class="fa fa-search"></i></span>
+                </div>
+            </form>
         </li>
         <li class="dropdown" style="inline-block">
-            <a href="{% url 'self_data' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  style="font-weight:bold">Mi Perfil<span class="caret"></span></a>
+            <a href="{% url 'self_data' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
+               aria-haspopup="true" aria-expanded="false" style="font-weight:bold">Mi Perfil<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="{% url 'self_data' %}">Mis Datos</a></li>
                 <li><a href="{% url 'self_lists' %}">Mis Listas</a></li>
@@ -58,7 +64,8 @@
     <ul class="nav navbar-nav navbar-right">
         {% if request.path == '/' %}
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  style="font-weight:bold">Perfiles<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false" style="font-weight:bold">Perfiles<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 {% for profile in profiles %}
                 <li><a href="{{profile.pk}}">{{profile.name}}</a></li>
@@ -67,7 +74,7 @@
         </li>
         {% endif %}
         <li><a href="{% url  'logout' %}" style="font-weight:bold">Logout</a></li>
-        <li><img class="img-circle" src="{{user_photo.0.photo.url}}" alt="" height="50" ></li>
+        <li><img class="avatar" src="{{user_photo.0.photo.url}}" alt=""></li>
     </ul>
     {% endif %}
     {% endblock %}
@@ -83,10 +90,10 @@
 </div>
 {% else %}
 <div id="content">
-    <section style = "padding:0;margin:0;">
+    <section style="padding:0;margin:0;">
         {% block sect %}{% endblock %}
     </section>
 </div>
-{% endif  %}
+{% endif %}
 </body>
 </html>

@@ -18,7 +18,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.views.static import serve
 
-from gifts.views import HomeGifts, CreateGift, DetailGift, AddGiftToList, CreateList
+from gifts.views import HomeGifts, CreateGift, DetailGift, AddGiftToList, CreateList, search_gift
 from users.views import LoginView, CreateUser, LogoutView, ProfileView, SelfData, OtherData, SelfLists, SelfProfiles
 
 urlpatterns = [
@@ -36,5 +36,6 @@ urlpatterns = [
     url(r'^self_data',SelfData.as_view(),name='self_data'),
     url(r'^self_lists',SelfLists.as_view(),name='self_lists'),
     url(r'^self_profiles',SelfProfiles.as_view(),name='self_profiles'),
+    url(r'^search_gift',search_gift,name='search_gift'),
     url(r'^Files/(?P<path>.*)$',serve,{'document_root': settings.MEDIA_ROOT})
 ]

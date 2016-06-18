@@ -110,8 +110,6 @@ class ProfileView(View):
             for like in like_split:
                 likes_user = LikesUser.objects.create(user = request.user,profile=profile_new,like = like)
                 likes_user.save()
-            name_list = name_profile+'_List'
-            List.objects.create(user=request.user,name=name_list,profile = profile_new,visibility=PUBLIC)
             return HttpResponse('Conseguido')
 
 class SelfData(View):
@@ -121,8 +119,6 @@ class SelfData(View):
         query_list = List.objects.filter(user=request.user)
         query_likes = LikesUser.objects.filter(user = request.user)
         user_photo = PhotoUser.objects.filter(user=request.user)
-        if user_photo is None:
-            user_photo = None
         context = {
             'gifts_list':query_list,
             'profiles':query_profile,
@@ -177,9 +173,12 @@ class OtherData(View):
         if not other_user_photo:
             other_user_photo = PhotoUser.objects.create(user=other_user,photo='/static/img/hombre.png')
         query_list = List.objects.filter(user=other_user).filter(visibility = PUBLIC)
+        user_photo = PhotoUser.objects.filter(user=request.user)
         context = {
             'lists':query_list,
-            'other_user':other_user_photo
+            'other_user':other_user_photo,
+            'user_photo': user_photo
+
         }
         return render(request,'users/profile_other.html',context)
 

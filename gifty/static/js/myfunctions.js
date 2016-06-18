@@ -10,6 +10,7 @@
 });*/
 
 
+
 $(function () {
 
     $("#myTags").tagit();
@@ -18,15 +19,15 @@ $(function () {
         var ob = $(this)
         ob.find('.dropdown-img').show();
         ob.find('.top-img').show();
-        ob.find('img').css('opacity','0.6');
-        ob.find('button').css('opacity','1');
+        ob.find('img').css('opacity', '0.6');
+        ob.find('button').css('opacity', '1');
 
     })
     $('.img-home').mouseout(function (value) {
         var ob = $(this)
         ob.find('.dropdown-img').hide();
         ob.find('.top-img').hide();
-        ob.find('img').css('opacity','1');
+        ob.find('img').css('opacity', '1');
     })
 
     $('.profile-gift').click(function () {
@@ -40,6 +41,18 @@ $(function () {
         send_data_url(data_send, url)
     })
 
+});
+
+$(function () {
+    $("#search-button").click(function () {
+        var caracteristicas = $("#search").tagit("assignedTags")
+        var url = 'http://localhost:8000/search_gift'
+        var caract = caracteristicas.toString()
+        $("#search-hide").val(caract)
+        var hola = $('#search-hide').val()
+        $("#form_search").submit()
+        
+    })
 });
 
 $(function () {
@@ -83,61 +96,62 @@ $(function () {
         var name = $('#name').val()
         var visibility = $('#visibility').val()
         var caracteristicas = $("#caract").tagit("assignedTags")
-        
+
         var data_send = {
-            profile:profile,
-            name:name,
-            visibility:visibility,
-            caracteristicas:caracteristicas
+            profile: profile,
+            name: name,
+            visibility: visibility,
+            caracteristicas: caracteristicas
         }
         var url = 'create_list'
-        send_data_url(data_send,url)
+        send_data_url(data_send, url)
     })
     $('#topic_profile').tagit()
-    $('#upload_profile').click(function(){
+    $('#upload_profile').click(function () {
         var name = $('#name_profile').val()
         var gender = $('#gender_profile').val()
         var caracteristicas = $("#topic_profile").tagit("assignedTags")
         var age = $("#age_profile").val()
 
         var data_send = {
-            name:name,
-            gender:gender,
-            like_list:caracteristicas.toString(),
-            age:age
+            name: name,
+            gender: gender,
+            like_list: caracteristicas.toString(),
+            age: age
         }
         var url = 'create_profile'
-        send_data_url(data_send,url)
+        send_data_url(data_send, url)
     })
-    
+
 })
-$(function() {
+$(function () {
     $('.jcarousel').jcarousel();
 
     $('.jcarousel-control-prev')
-        .on('jcarouselcontrol:active', function() {
-        $(this).removeClass('inactive');
-    })
-        .on('jcarouselcontrol:inactive', function() {
-        $(this).addClass('inactive');
-    })
+        .on('jcarouselcontrol:active', function () {
+            $(this).removeClass('inactive');
+        })
+        .on('jcarouselcontrol:inactive', function () {
+            $(this).addClass('inactive');
+        })
         .jcarouselControl({
-        target: '-=1'
-    });
+            target: '-=1'
+        });
 
     $('.jcarousel-control-next')
-        .on('jcarouselcontrol:active', function() {
-        $(this).removeClass('inactive');
-    })
-        .on('jcarouselcontrol:inactive', function() {
-        $(this).addClass('inactive');
-    })
+        .on('jcarouselcontrol:active', function () {
+            $(this).removeClass('inactive');
+        })
+        .on('jcarouselcontrol:inactive', function () {
+            $(this).addClass('inactive');
+        })
         .jcarouselControl({
-        target: '+=2'
-    });
+            target: '+=2'
+        });
 
 
 })
+
 function send_data_url(data_send, url) {
     var csrftoken = getCookie('csrftoken')
     $.ajaxSetup({
@@ -204,4 +218,29 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+function search_gift(caracts,url){
+    var csrftoken = getCookie('csrftoken')
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: caracts,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            var hola = response
+        },
+        error: function (error, response) {
+            alert('error ' + error.message)
+        }
+    })
 }

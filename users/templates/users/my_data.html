@@ -5,13 +5,13 @@
 <div class="row">
     <div class="col-md-4">
         <div class="well well-data" style="padding-top:10px;padding-left:10px;">
-            <img src="{% static 'img/hombre.png' %}" alt="" width="340">
+            <img src="{{user_photo.0.photo.url}}" alt="" width="340">
             <div class="panel panel-default"  style="margin-top:15px">
                 <div class="panel-heading" style="background-color:#1FB8A9;color:white">
                     Mi descripción
                 </div>
                 <div class="panel-body">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores consectetur labore minima, placeat qui reiciendis repudiandae voluptate. Amet aut blanditiis exercitationem sed sint. A accusantium deserunt eum fugiat id nam.
+                   {{user_photo.0.description}}
                 </div>
             </div>
         </div>

@@ -3,12 +3,12 @@ from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.generic.base import View
 from django.views.generic.detail import DetailView
 
 from gifts.forms import GiftForm, CommentForm
-from gifts.models import Gift, PUBLIC, GiftsMember, List, CommentGift
+from gifts.models import Gift, PUBLIC, GiftsMember, List, CommentGift, LikesGift
 from users.models import Profile, PhotoUser
 
 
@@ -66,10 +66,13 @@ class CreateGift(View):
     def post(self,request):
         if request.is_ajax() and request.POST:
             objects_upload = request.POST
+            likes = objects_upload.get('caracteristicas').split(',')
             list_pk = objects_upload.get('list')
             list = List.objects.filter(pk=list_pk)[0]
             gift = Gift.objects.create(url=objects_upload.get('url'),tienda = objects_upload.get('tienda'), name=objects_upload.get('name'),user = request.user,photo=request._files.get('photo'),description=objects_upload.get('description'),prize = objects_upload.get('precio'),visibility=objects_upload.get('visibility'))
             GiftsMember.objects.create(gift=gift,list = list)
+            for like in likes:
+                LikesGift.objects.create(gift = gift,like = like)
             return HttpResponse('Conseguido')
 
 class DetailGift(View):
@@ -132,3 +135,25 @@ class CreateList(View):
             visibility = request.POST.get('visibility')
             List.objects.create(user=request.user,visibility=visibility,name=name)
             return HttpResponse('Conseguido')
+
+def search_gift(request):
+        datas = request.POST.get('caract').split(',')
+        gifts = []
+        ids = []
+        for data in datas:
+            gift =LikesGift.objects.filter(like=data).exclude(gift__pk__in = ids).select_related('gift')
+            if len(gift) > 0:
+                for gift_1 in gift:
+                    ids.append(gift_1.gift.pk)
+                    gifts.append(gift_1.gift)
+
+        profiles = Profile.objects.filter(user=request.user)
+        lists = List.objects.filter(user=request.user)
+        user_photo = PhotoUser.objects.filter(user=request.user)
+        context={
+            'gifts_list': gifts,
+            'profiles': profiles,
+            'lists': lists,
+            'user_photo': user_photo
+        }
+        return render(request, 'gifts/home.html', context)

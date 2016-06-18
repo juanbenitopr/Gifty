@@ -65,3 +65,6 @@ class LikeGiftProfile(models.Model):
 class LikesGift(models.Model):
     like = models.CharField(max_length=150)
     gift = models.ForeignKey(Gift)
+class LikeList(models.Model):
+    like = models.CharField(max_length=150)
+    list = models.ForeignKey(List)

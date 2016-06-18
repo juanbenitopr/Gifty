@@ -22,13 +22,6 @@
             <div class="modal-body modal-body-custom">
                 <div class="form-create-gift">
                     <div class="input-form">
-                        <p>Perfil: </p><select name="profiles" id="profiles" class="selectpicker">
-                        {% for profile in profiles %}
-                        <option value="{{profile.pk}}">{{profile.name}}</option>
-                        {% endfor %}
-                    </select>
-                    </div>
-                    <div class="input-form">
                         <p>Name: </p><input type="text" name="name" id="name">
                     </div>
                     <div class="input-form">

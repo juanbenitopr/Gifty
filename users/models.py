@@ -34,6 +34,8 @@ class LikesUser(models.Model):
      user = models.ForeignKey(User,null=True)
      profile = models.ForeignKey(Profile)
      like = models.CharField(max_length=150)
+     def __unicode__(self):
+         return self.profile.name
 
 class Followers(models.Model):
     follower_owner= models.ForeignKey(User, related_name='+')

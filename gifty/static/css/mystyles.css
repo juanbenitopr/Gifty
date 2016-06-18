@@ -14,7 +14,11 @@
       height: 300px;
       width: 250px;
   }
-  
+.avatar{
+    object-fit: contain; 
+    object-position: center;
+    height: 50px;
+}
   .well p {
       margin-left: 4%
   }
@@ -383,8 +387,9 @@ have a fixed width and height (but it's not required).
   
   .login-logo {
       position: absolute;
-      top: 45%;
-      right: 45%
+      top:58%;
+      right: 43%;
+      width: 200px;
   }
   
   .btn-custom-image {

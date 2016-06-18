@@ -19,7 +19,7 @@ class ListGiftForm(forms.ModelForm):
         exclude = ['owner']
 
 class CommentForm(forms.ModelForm):
-    comment = CharField(label='Comentario', max_length=300)
+    comment = CharField(label='', max_length=300)
 
     class Meta:
         model = CommentGift
