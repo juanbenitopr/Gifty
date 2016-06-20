@@ -36,7 +36,7 @@
     <ul class="nav navbar-nav">
         {% if user.is_authenticated %}
         <li>
-            <form id="form_search" action="search_gift" method="post">
+            <form id="form_search" action="http://localhost:8000/search_gift'" method="post">
                 {% csrf_token %}
                 <input type="hidden" id="search-hide" name="caract">
                 <div class="input-group input-group-custom">

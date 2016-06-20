@@ -6,6 +6,7 @@ from django.db import models
 
 # Create your models here.
 from django.db.models.deletion import CASCADE
+from django.db.models.fields.related import ForeignKey
 
 from users.models import Profile
 
@@ -30,9 +31,6 @@ class Gift(models.Model):
     def __unicode__(self):
         return self.name
 
-class GiftsCharts(models.Model):
-    gift = models.ForeignKey(Gift)
-    char = models.CharField(max_length=150)
 
 class List(models.Model):
     name = models.CharField(max_length=150,default='')
@@ -57,10 +55,6 @@ class ScoreGift(models.Model):
     gift = models.ForeignKey(Gift)
     user = models.ForeignKey(User)
 
-class LikeGiftProfile(models.Model):
-    profile = models.ForeignKey(Profile)
-    list = models.ForeignKey(List)
-    gift = models.ForeignKey(Gift)
 
 class LikesGift(models.Model):
     like = models.CharField(max_length=150)
@@ -68,3 +62,7 @@ class LikesGift(models.Model):
 class LikeList(models.Model):
     like = models.CharField(max_length=150)
     list = models.ForeignKey(List)
+
+class LikeGiftUser(models.Model):
+    user = ForeignKey(User)
+    gift = ForeignKey(Gift)

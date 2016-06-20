@@ -2,10 +2,12 @@
 
 {% block section %}
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <div class="well well-data" style="padding-top:10px;padding-left:10px;">
-            <img src="{{other_user.0.photo.url}}" alt="" width="340">
-            <div class="panel panel-default"  style="margin-top:15px">
+            <img src="{{other_user.0.photo.url}}" class="img-other-data">
+              </div>
+        <div class="col-md-4" style="margin-top:15px;position:absolute;left:40%;top:40%">
+            <div class="panel panel-default"  >
                 <div class="panel-heading" style="background-color:#1FB8A9;color:white">
                     {{other_user.0.user.username}}
                 </div>
@@ -14,13 +16,17 @@
                 </div>
             </div>
         </div>
-    </div>
+  </div>
 </div>
 
 <div class="lists-data">
-    {% for list in lists %}
-    <div class="row">
-    <div class="col-md-8">
+  <div class="row">
+      {% for list in lists %}
+    {% if forloop.counter0|divisibleby:2%}
+</div>
+<div class="row">
+    {% endif %}
+    <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color:#1FB8A9;color:white">
                 {{list.name}}
@@ -30,7 +36,7 @@
                 <div class="jcarousel" >
                     <ul>
                         {% for gift in list.gifts.all %}
-                        <li><a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="150" ></a></li>
+                        <li><a href="{% url 'detail_gift' gift.pk %}" style="display:inline-block"><img src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}" height="200" ></a></li>
                         {% empty %}
                         No hay regalos!
                         {% endfor %}
@@ -41,7 +47,6 @@
             </div>
         </div>
     </div>
-        </div>
     {% endfor %}
 </div>
 {% endblock %}

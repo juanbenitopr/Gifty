@@ -6,9 +6,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.generic.base import View
 from django.views.generic.detail import DetailView
+from rest_framework.response import Response
+from django.template.defaulttags import register
 
 from gifts.forms import GiftForm, CommentForm
-from gifts.models import Gift, PUBLIC, GiftsMember, List, CommentGift, LikesGift
+from gifts.models import Gift, PUBLIC, GiftsMember, List, CommentGift, LikesGift, LikeGiftUser
 from users.models import Profile, PhotoUser
 
 
@@ -22,13 +24,19 @@ class HomeGifts(View):
         profiles = Profile.objects.filter(user=request.user)
         lists = List.objects.filter(user = request.user )
         user_photo = PhotoUser.objects.filter(user=request.user)
+        likes_user = {}
         if user_photo is None:
             user_photo = None
+        for gift in gifts:
+            user_like  = LikeGiftUser.objects.filter(user = request.user,gift=gift).count()
+            likes_gift = LikeGiftUser.objects.filter(gift = gift).count()
+            likes_user.update({gift.pk:[True if user_like>0 else False,likes_gift]})
         context = {
             'gifts_list':gifts,
             'profiles':profiles,
             'lists':lists,
-            'user_photo':user_photo
+            'user_photo':user_photo,
+            'user_likes':likes_user
         }
         return render(request,'gifts/home.html',context)
     @method_decorator(login_required())
@@ -150,10 +158,37 @@ def search_gift(request):
         profiles = Profile.objects.filter(user=request.user)
         lists = List.objects.filter(user=request.user)
         user_photo = PhotoUser.objects.filter(user=request.user)
+        likes_user= {}
+        for gift in gifts:
+            user_like  = LikeGiftUser.objects.filter(user = request.user,gift=gift).count()
+            likes_gift = LikeGiftUser.objects.filter(gift = gift).count()
+            likes_user.update({gift.pk:[True if user_like>0 else False,likes_gift]})
         context={
             'gifts_list': gifts,
             'profiles': profiles,
             'lists': lists,
-            'user_photo': user_photo
+            'user_photo': user_photo,
+            'user_likes':likes_user
         }
         return render(request, 'gifts/home.html', context)
+def like_gift(request):
+    if request.is_ajax() and request.POST:
+        datas = request.POST.get('id_gift')
+        gift = Gift.objects.filter(pk = datas)
+        if len(gift)>0:
+            gift = gift[0]
+            like_gift = LikeGiftUser.objects.filter(gift=gift, user=request.user)
+            if len(like_gift)>0:
+                like_gift.delete()
+            else:
+                LikeGiftUser.objects.create(user = request.user,gift = gift)
+            return HttpResponse('Conseguido')
+    return HttpResponse('Error')
+
+@register.filter
+def get_user_like(dictionary, key):
+    return dictionary.get(key)[0]
+
+@register.filter
+def get_number_like(dictionary, key):
+    return dictionary.get(key)[1]

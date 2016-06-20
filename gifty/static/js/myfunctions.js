@@ -31,14 +31,14 @@ $(function () {
     })
 
     $('.profile-gift').click(function () {
-        var id_gift = $(this).closest('ul').attr('id');
+        var id_gift = $(this).closest('.dropdown-img').attr('id');
         var id_list = $(this).attr('id')
         var data_send = {
             'id_gift': id_gift,
             'id_list': id_list
         }
         var url = 'guardar_gift'
-        send_data_url(data_send, url)
+        add_to_list(data_send, url)
     })
 
 });
@@ -51,9 +51,64 @@ $(function () {
         $("#search-hide").val(caract)
         var hola = $('#search-hide').val()
         $("#form_search").submit()
-        
+
     })
+
 });
+
+$(function () {
+
+    $('.like_gift').click(function (event) {
+        event.preventDefault()
+        var h = $(this)
+        var id_gift = $(this).closest('.dropdown-img').attr('id');
+        setup_ajax()
+        
+        if (h.hasClass('user_like_gift')){
+            $.ajax({
+                url: 'http://localhost:8000/like_gift',
+                type: "POST",
+                data: {
+                    id_gift: id_gift
+                },
+                success: function (response) {
+                    var hola = response
+                    h.removeClass('user_like_gift').addClass('user_no_like')
+                    var span_value = h.children('span')
+                    var value = span_value.text()
+                    value = parseInt(value)-1
+                    span_value.text(value)
+
+                },
+                error: function (error, response) {
+                    alert('error ' + error.message)
+                }
+            })
+        }else if(h.hasClass('user_no_like')){
+            $.ajax({
+                url: 'http://localhost:8000/like_gift',
+                type: "POST",
+                data: {
+                    id_gift: id_gift
+                },
+                success: function (response) {
+                    var hola = response
+                    h.removeClass('user_no_like').addClass('user_like_gift')
+                    var span_value = h.children('span')
+                    var value = span_value.text()
+                    value = parseInt(value)+1
+                    span_value.text(value)
+                },
+                error: function (error, response) {
+                    alert('error ' + error.message)
+                }
+            })
+        }
+       
+
+
+    })
+})
 
 $(function () {
     $("#caract").tagit();
@@ -175,6 +230,28 @@ function send_data_url(data_send, url) {
     })
 }
 
+function add_to_list(data_send, url) {
+    var csrftoken = getCookie('csrftoken')
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: data_send,
+        success: function (response) {
+        },
+        error: function (error, response) {
+            alert('error ' + error.message)
+        }
+    })
+}
+
 function send_image_url(data_send, url) {
     var csrftoken = getCookie('csrftoken')
     $.ajaxSetup({
@@ -220,7 +297,18 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function search_gift(caracts,url){
+function setup_ajax(){
+    var csrftoken = getCookie('csrftoken')
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+}
+
+function search_gift(caracts, url) {
     var csrftoken = getCookie('csrftoken')
     $.ajaxSetup({
         beforeSend: function (xhr, settings) {

@@ -9,16 +9,36 @@
   
   .img-custom {
       margin-bottom: 10px;
-      object-fit: contain; 
+      object-fit: contain;
       object-position: center;
       height: 300px;
       width: 250px;
   }
-.avatar{
-    object-fit: contain; 
-    object-position: center;
-    height: 50px;
-}
+  
+  .img-my-data {
+      margin-bottom: 10px;
+      margin-left: 20px;
+      object-fit: contain;
+      object-position: center;
+      height: 400px;
+      width: 300px;
+  }
+  
+  .img-other-data {
+      margin-bottom: 10px;
+      margin-left: 20px;
+      object-fit: contain;
+      object-position: center;
+      height: 300px;
+      width: 200px;
+  }
+  
+  .avatar {
+      object-fit: contain;
+      object-position: center;
+      height: 50px;
+  }
+  
   .well p {
       margin-left: 4%
   }
@@ -42,13 +62,21 @@
   }
   
   .well-data {
-      padding-left:0
-   }
-.img-data{
-    border-radius: 3px;
-    border:0.2px solid black;
-    
-}
+      padding-left: 0;
+  }
+  
+  .img-data {
+      border-radius: 3px;
+      border: 0.2px solid black;
+  }
+  
+  .user_like_gift {
+      background-color: #17F0CC!important;
+      border-color: #17F0CC!important
+  }
+
+
+  
   input {
       border: 1px solid #9F9C9C;
       border-radius: 5px;
@@ -237,6 +265,7 @@
       border-color: #26A69A;
       color: white
   }
+  
   .btn-circle-custom-top {
       width: 40px;
       height: 40px;
@@ -387,7 +416,7 @@ have a fixed width and height (but it's not required).
   
   .login-logo {
       position: absolute;
-      top:58%;
+      top: 58%;
       right: 43%;
       width: 200px;
   }
