@@ -3,7 +3,6 @@
   }
   
   section {
-      background-color: #E9E9E1;
       border-radius: 5px;
   }
   
@@ -74,8 +73,6 @@
       background-color: #17F0CC!important;
       border-color: #17F0CC!important
   }
-
-
   
   input {
       border: 1px solid #9F9C9C;
@@ -288,10 +285,23 @@
       font-size: 1.2em;
   }
   
+  .nav-custom:focus {
+      color: white;
+      background-color: #26A69A
+  }
+  
   .btn-circle-custom:focus {
       color: white;
       background-color: #26A69A
   }
+  .btn-circle-custom-top:focus{
+       color: white;
+      background-color: #26A69A
+  }
+.wizard > .content{
+    min-height:300px;
+    background-color: white
+}
   
   .btn-circle-custom-top:hover {
       width: 60px;
@@ -433,6 +443,12 @@ have a fixed width and height (but it's not required).
       color: white;
   }
   
+  .btn-custom-image:focus {
+      background-color: #39b2a6;
+      border-color: #39b2a6;
+      color: white;
+  }
+  
   .input-group-custom {
       margin-top: 5px;
   }
@@ -444,3 +460,7 @@ have a fixed width and height (but it's not required).
   .input-group-custom:hover {
       background-color: #26A69A!important;
   }
+
+.wizard > .steps > ul > li{
+    width: auto
+}

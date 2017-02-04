@@ -11,9 +11,12 @@
 
 
 
+
+
+
 $(function () {
 
-    $("#myTags").tagit();
+    
     $('#search').tagit();
     $('.img-home').mouseover(function (value) {
         var ob = $(this)
@@ -53,7 +56,21 @@ $(function () {
         $("#form_search").submit()
 
     })
-
+    $("#myTags").tagit();
+    $("#mTags").tagit();
+    $("#wizard").steps({
+        headerTag: "h3",
+        bodyTag: "section",
+        transitionEffect: "slideLeft",
+        autoFocus: true,
+        onFinished: function (event, currentIndex)
+        {
+            var mytag = $('myTags').tagit("assignedTags")
+            $('newTag').val(mytag)
+            $("#wizard").submit()
+        }
+    });
+    
 });
 
 $(function () {

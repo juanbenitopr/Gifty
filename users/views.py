@@ -24,7 +24,7 @@ class CreateUser(View):
         context = {
             'form_user' : form_user
         }
-        return render(request,'users/create.html',context)
+        return render(request,'users/singup.html',context)
 
     def post(self,request):
         form = NewUserForm(request.POST,request.FILES)
@@ -42,9 +42,7 @@ class CreateUser(View):
             user.is_staff = False
             user.save()
             profile = Profile.objects.create(user = user,name = name_profile,age=age,gender=gender,is_default=True)
-            profile.save()
-            list = List.objects.create(user=user,name=name_list)
-            list.save()
+            List.objects.create(user=user,name=name_list,visibility='PUB')
             if photo_user:
                 PhotoUser.objects.create(user = user,photo =photo_user)
             else:
@@ -54,7 +52,7 @@ class CreateUser(View):
             for like in likes_list:
                 LikesUser.objects.create(like=like,user=user,profile=profile)
             return redirect(request.GET.get('next','login'))
-
+        return HttpResponse('hola')
 
 class LoginView(View):
 

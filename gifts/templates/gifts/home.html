@@ -10,31 +10,30 @@
     <div class="col-md-3">
         <div class="well well-custom" style="display:inline-block;">
 
-
             <div class="img-home">
                 <a href="{% url 'detail_gift' gift.pk %}">
                     <img class="img-custom" src="{{ gift.photo.url }}" alt="{{ gift.photo.url }}"
                          style="display:block;border-radius:4px 4px 0 0">
                 </a>
                 <div class="dropdown-img" id="{{gift.pk}}">
-                    {% if  user_likes|get_user_like:gift.pk == True %}
-                    <button class="btn btn-default btn-custom-image like_gift user_like_gift" type="button" aria-hidden="true"
+                    {% if user_likes|get_user_like:gift.pk == True %}
+                    <button class="btn btn-custom-image like_gift user_like_gift" type="button" aria-hidden="true"
                             style="display:inline-block">
                         <i class="fa fa-gift" style="font-size:1.2em"></i><span style="margin-left:5px">{{ user_likes|get_number_like:gift.pk}}</span>
                     </button>
                     {% else %}
-                    <button class="btn btn-default btn-custom-image like_gift user_no_like" type="button" aria-hidden="true"
+                    <button class="btn btn-custom-image like_gift user_no_like" type="button" aria-hidden="true"
                             style="display:inline-block">
                         <i class="fa fa-gift" style="font-size:1.2em"></i><span style="margin-left:5px">{{ user_likes|get_number_like:gift.pk}}</span>
                     </button>
                     {% endif %}
                     <div class="dropdown" style="display:inline-block">
-                        <button class="btn btn-default dropdown-toggle btn-custom-image" type="button"
+                        <button class="btn dropdown-toggle btn-custom-image" type="button"
                                 id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="fa fa-plus"></i>
                         </button>
 
-                        <ul class="dropdown-menu"  aria-labelledby="dropdownMenu1">
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             {% for list in lists %}
                             <li><p class="profile-gift" id="{{list.pk}}">{{list.name}}</p></li>
                             {% endfor %}
@@ -42,7 +41,7 @@
                     </div>
                 </div>
                 <div class="top-img">
-                    <button role="button" class="btn btn-default btn-custom-image" style="font-weight:bold">Send <i
+                    <button role="button" class="btn btn-custom-image" style="font-weight:bold">Send <i
                             class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
@@ -52,7 +51,7 @@
         </div>
     </div>
     {% endfor %}
-    <button type="button" class="btn btn-default btn-circle btn-circle-custom" data-toggle="modal"
+    <button type="button" class="btn btn-circle btn-circle-custom" data-toggle="modal"
             data-target="#create_gift_modal">
         <span class="fa fa-plus"></span>
     </button>
@@ -69,43 +68,42 @@
                 <div class="modal-body modal-body-custom">
                     <div class="form-create-gift">
                         <div class="input-form">
+                            <p>Nombre: </p><input type="text" name="name" id="name">
                             <p>Lista: </p><select name="lists" id="lists" class="selectpicker">
                             {% for list in lists %}
                             <option value="{{list.pk}}">{{list.name}}</option>
                             {% endfor %}
                         </select>
                         </div>
-                        <div class="input-form">
-                            <p>Nombre: </p><input type="text" name="name" id="name">
-                        </div>
-                        <div class="input-form">
-                            <p>Foto: </p>
-                            <input type="file" name="photo" id="photo">
-                        </div>
+
+
                         <div class="input-form">
                             <p>Precio</p>
                             <input type="number" id="precio">
-                        </div>
-                        <div class="input-form">
                             <p>Visib: </p>
                             <select name="visibility" id="visibility" class="selectpicker">
                                 <option value="PUB">Publica</option>
                                 <option value="PRIV">Privada</option>
                             </select>
                         </div>
+
                         <div class="input-form">
                             <p>Tienda: </p>
                             <input type="text" id="tienda" name="tienda">
-                        </div>
-                        <div class="input-form">
                             <p>Url Gift: </p>
                             <input type="text" id="url" name="url">
                         </div>
+
                         <p>Descripción: </p>
-                        <textarea type="text" rows="5" id="description" style="border-radius:10px"></textarea>
+                        <textarea type="text" rows="5" cols="43" id="description"
+                                  style="border-radius:10px;border:1px solid #9F9C9C;"></textarea>
 
                         <p>Caracteristicas: </p>
-                        <input id="caract" type="text" name="caract">
+                        <input style="1px solid #9F9C9C" id="caract" type="text" name="caract">
+                        <div class="input-form">
+                            <p>Foto: </p>
+                            <input style="1px solid #9F9C9C"type="file" name="photo" id="photo">
+                        </div>
                     </div>
                 </div>
                 <div class="panel-footer">
